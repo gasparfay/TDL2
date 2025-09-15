@@ -1,4 +1,4 @@
-package streamingplatform;
+package model;
 
 /**
  * Representa una sesión en ejecución de la plataforma de streaming.

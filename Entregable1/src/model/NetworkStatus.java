@@ -1,4 +1,4 @@
-package streamingplatform;
+package model;
 
 /**
  * Representa el estado de la red para la plataforma de streaming.
