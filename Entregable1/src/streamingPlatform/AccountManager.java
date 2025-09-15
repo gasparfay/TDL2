@@ -15,4 +15,6 @@ public class AccountManager {
      * Lista de cuentas gestionadas por el AccountManager.
      */
     private List<Account> accounts;
+
+    
 }
