@@ -1,18 +1,12 @@
-## Getting Started
+# Plataforma de Streaming — Entregable 1
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Proyecto académico de la materia **Taller de Lenguajes II**, correspondiente al cuarto semestre de la carrera **Ingeniería en Computación** de las **Facultades de Ingeniería e Informática** de la **Universidad Nacional de La Plata**.
 
-## Folder Structure
+Esta entrega modela, a nivel conceptual y con un prototipo de código, una **plataforma de streaming**. Incluye diagramas y documentación básica para describir el funcionamiento general del sistema y sus casos de uso principales (registro/inicio de sesión, perfiles, exploración de catálogo, reproducción y funcionalidades asociadas).
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Contenido del repositorio
+- Diagrama de clases del sistema en formato **PDF**.
+- Diagrama de secuencia que representa una **situación** típica de un usuario **iniciando sesión** (PDF), junto con un **pseudocódigo** y breve descripción.
+- Código fuente base (Java) de algunas clases con comentarios.
+- Carpeta `doc` que incluye la documentación HTML **Javadoc** del proyecto.
+- Este README con una descripción general del trabajo.
