@@ -10,3 +10,8 @@ Esta entrega modela, a nivel conceptual y con un prototipo de código, una **pla
 - Código fuente base (Java) de algunas clases con comentarios.
 - Carpeta `doc` que incluye la documentación HTML **Javadoc** del proyecto.
 - Este README con una descripción general del trabajo.
+
+## Posibles mejoras de cara a la **implementación**
+Basandonos en lo visto en la ultima del **patrón** singleton creemos que podria implementarse en algunas clases de nuestro sistema, como por ejemplo las clases controladoras, y quizas la clase NetworkStatus.
+
+Fay Dylan Gaspar y Giovagnoli Franco Ruben | Grupo 8 | 15/09/2025
