@@ -22,6 +22,13 @@ public class NetworkStatus {
     private double bufferLevel;
 
     /**
+    * Crea una nueva instancia de NetworkStatus, e inicializa sus atributos mediante update().
+    */
+    public NetworkStatus() {
+    // update();
+    }
+
+    /**
      * Obtiene la velocidad de la red en Mbps.
      * 
      * @return velocidad de la red
