@@ -16,5 +16,12 @@ public class AccountManager {
      */
     private List<Account> accounts;
 
+    /**
+     * Crea una nueva instancia de AccountManager.
+     * Llama al metodo que carga la lista de cuentas.
+     */
+    public AccountManager() {
+    // this.loadAccounts();
+    }
     
 }
