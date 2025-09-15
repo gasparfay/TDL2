@@ -54,16 +54,15 @@ public class Client {
      * Constructor de Client.
      * Instancia todos los gestores y la sesión del cliente.
      */
-    /*
-     * public Client() {
-     * this.session = new Session();
-     * this.accountManager = new AccountManager();
-     * this.interactionContentManager = new InteractionContentManager();
-     * this.statsManager = new StatsManager();
-     * this.playbackManager = new PlaybackManager();
-     * this.contentManager = new ContentManager();
-     * }
-     */
+    public Client() {
+       this.session = new Session();
+       this.accountManager = new AccountManager();
+    // this.interactionContentManager = new InteractionContentManager();
+    // this.statsManager = new StatsManager();
+    // this.playbackManager = new PlaybackManager();
+    // this.contentManager = new ContentManager();
+    }
+     
 
     /**
      * Obtiene la sesión activa del cliente.

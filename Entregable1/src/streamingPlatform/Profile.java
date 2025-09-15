@@ -1,5 +1,6 @@
 package streamingPlatform;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
 /**
@@ -31,6 +32,20 @@ public class Profile {
 	 * El enum Genre está ubicado en el diagrama UML de clases.
 	 */
 	// private EnumSet<Genre> genres;
+
+	/**
+     * Crea un nuevo perfil con el nombre y el idioma especificados.
+     * Inicializa el identificador único del perfil.
+     *
+     * @param name nombre del perfil
+     * @param lang idioma preferido del perfil
+     */
+	public Profile(String name /*, Language lang*/) {
+        this.profileId = UUID.randomUUID();
+        this.name = name;
+    //  this.lang = lang;
+    //  this.genres = EnumSet.noneOf(Genre.class);
+    }
 
 	/**
 	 * Obtiene el identificador único del perfil.

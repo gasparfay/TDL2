@@ -53,6 +53,25 @@ public class Account {
 	// private FinancialReport financialReport;
 
 	/**
+     * Crea una nueva cuenta con el email, contraseña y tipo de suscripción especificados.
+     * Inicializa el identificador único de la cuenta y el vector de perfiles.
+     * Genera el reporte financiero asociado a la cuenta.
+     * @param email correo electrónico del usuario
+     * @param pwd contraseña de la cuenta
+     * @param sub tipo de suscripción de la cuenta
+     */
+    public Account(String email, String pwd /* , Subscription sub*/) {
+        this.accId = UUID.randomUUID();
+        this.email = email;
+        this.password = pwd;
+    //  this.subscriptionType = sub;
+        this.profileAmount = 0;
+        this.profiles = new Profile[5];
+        this.isAdmin = false;
+	//  this.financialReport = new FinancialReport(this.susbscriptionType);
+    }
+
+	/**
 	 * Obtiene el identificador único de la cuenta.
 	 * 
 	 * @return accId de la cuenta
