@@ -1,4 +1,4 @@
-package streamingPlatform;
+package streamingplatform;
 
 import java.util.UUID;
 
