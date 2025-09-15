@@ -1,2 +1,2 @@
 Este diagrama lo que busca reflejar es el proceso que debe realizar el sistema para que el usuario pueda acceder a su cuenta. 
-Implica una comunicación entre 5 clases y un loop que generaliza el caso donde el usuario no ingresó correctamente sus datos.
+Implica una comunicación entre 4 clases y un loop que generaliza el caso donde el usuario no ingresó correctamente sus datos.
