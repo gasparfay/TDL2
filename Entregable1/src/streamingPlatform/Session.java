@@ -75,7 +75,7 @@ public class Session {
      * 
      * @param isAdmin true si es administrador, false si no
      */
-    public void setAdmin(boolean isAdmin) {
+    public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 }
