@@ -39,7 +39,7 @@ public class Account {
 	/**
 	 * Vector de perfiles asociados a la cuenta (máximo 5).
 	 */
-	private Profile[] profiles = new Profile[5];
+	private Profile[] profiles;
 
 	/**
 	 * Indica si la cuenta tiene privilegios de administrador.
