@@ -1,9 +1,3 @@
-//DESDE EL USUARIO
-Client cliente= nuevoCliente()
-
-//DESDE EL CLIENTE
-Session sesion= nuevaSesion()
-
 //DEDE EL USUARIO
 mientras(cliente.iniciarSesion(miEmail, miPsw)==falso)
 
