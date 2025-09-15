@@ -146,4 +146,13 @@ public class Account {
 	public Profile[] getProfiles() {
 		return profiles;
 	}
+
+	/**
+	 * Devuelve si la cuenta es de administrador.
+	 * 
+	 * @return true si es admin, false si no
+	 */
+	public boolean getIsadmin() {
+		return isAdmin;
+	}
 }

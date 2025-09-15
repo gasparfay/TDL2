@@ -2,6 +2,7 @@ package streamingPlatform;
 
 /**
  * Representa el estado de la red para la plataforma de streaming.
+ * Existe una unica instacia de este clase por cliente.
  */
 public class NetworkStatus {
 

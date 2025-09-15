@@ -1,5 +1,15 @@
 package streamingPlatform;
 
+/**
+ * Representa una sesión en ejecución de la plataforma de streaming.
+ * Mantiene la sesión del cliente (cuenta y perfil activos) y crea/conserva
+ * los managers necesarios, centralizando el acceso a sus funcionalidades
+ * a través de esta instancia.
+ * 
+ * @author Grupo 8
+ * @version 1.0
+ * @see Account
+ */
 public class Client {
     /**
      * La sesión activa del cliente.
