@@ -38,7 +38,6 @@ public class Profile {
      * Inicializa el identificador único del perfil.
      *
      * @param name nombre del perfil
-     * @param lang idioma preferido del perfil
      */
 	public Profile(String name /*, Language lang*/) {
         this.profileId = UUID.randomUUID();

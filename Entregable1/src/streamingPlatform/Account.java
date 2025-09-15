@@ -58,7 +58,6 @@ public class Account {
      * Genera el reporte financiero asociado a la cuenta.
      * @param email correo electrónico del usuario
      * @param pwd contraseña de la cuenta
-     * @param sub tipo de suscripción de la cuenta
      */
     public Account(String email, String pwd /* , Subscription sub*/) {
         this.accId = UUID.randomUUID();
