@@ -1,0 +1,20 @@
+//DESDE EL USUARIO
+Client cliente= nuevoCliente()
+
+//DESDE EL CLIENTE
+Session sesion= nuevaSesion()
+
+//DEDE EL USUARIO
+mientras(cliente.iniciarSesion(miEmail, miPsw)==falso)
+
+//DESDE CLIENTE
+devolver (accountManager.autenthicate(miEmail, miPsw, sesion))
+
+//DESDE GESTOR CUENTAS
+acc=cuentas.buscarCuenta(miEmail)
+si(acc.getPsw()==psw)
+    sesion.setAccId(acc.getId())
+    sesion.setIsAdmin(acc.isAdmin())
+    devolver verdadero;
+sino 
+    devolver falso 

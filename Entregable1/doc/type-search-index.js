@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"streamingPlatform","l":"Account"},{"p":"streamingPlatform","l":"AccountManager"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"streamingPlatform","l":"Client"},{"p":"streamingPlatform","l":"NetworkStatus"},{"p":"streamingPlatform","l":"Profile"},{"p":"streamingPlatform","l":"Session"}];updateSearchResults();
