@@ -1,7 +1,6 @@
 package streamingPlatform;
 
 import java.util.UUID;
-import java.util.concurrent.Flow.Subscription;
 
 /**
  * Representa una cuenta de usuario en la plataforma de streaming.
@@ -30,7 +29,7 @@ public class Account {
 	 * Tipo de suscripción de la cuenta. Es un valor del enum Subscription, que esta
 	 * creado en el diagrama UML de clases.
 	 */
-	private Subscription subscriptionType;
+	// private Subscription subscriptionType;
 
 	/**
 	 * Cantidad de perfiles asociados a la cuenta. De 0 a 5.
@@ -112,18 +111,22 @@ public class Account {
 	 * 
 	 * @return tipo de suscripción
 	 */
-	public Subscription getSubscriptionType() {
-		return subscriptionType;
-	}
+	/*
+	 * public Subscription getSubscriptionType() {
+	 * return subscriptionType;
+	 * }
+	 */
 
 	/**
 	 * Establece el tipo de suscripción de la cuenta.
 	 * 
 	 * @param subscriptionType nuevo tipo de suscripción.
 	 */
-	public void setSubscriptionType(Subscription subscriptionType) {
-		this.subscriptionType = subscriptionType;
-	}
+	/*
+	 * public void setSubscriptionType(Subscription subscriptionType) {
+	 * this.subscriptionType = subscriptionType;
+	 * }
+	 */
 
 	/**
 	 * Obtiene la cantidad de perfiles asociados a la cuenta.
