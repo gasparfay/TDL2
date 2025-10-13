@@ -2,7 +2,8 @@ package model;
 
 /**
  * Representa una sesión de usuario en la plataforma de streaming.
- *
+ * Contiene la cuenta y el perfil asociados a la sesión actual.
+ * 
  * @author Grupo 8
  * @version 1.0
  * @see Account
@@ -22,7 +23,7 @@ public class Session {
     /**
      * Obtiene la cuenta asociada a la sesión actual.
      * 
-     * @return cuenta asociada
+     * @return la cuenta asociada a la sesión
      */
     public Account getCurrentAccount() {
         return currentAccount;
@@ -31,7 +32,7 @@ public class Session {
     /**
      * Establece la cuenta asociada a la sesión actual.
      * 
-     * @param currentAccount nueva cuenta asociada
+     * @param currentAccount la nueva cuenta asociada a la sesión
      */
     public void setCurrentAccount(Account currentAccount) {
         this.currentAccount = currentAccount;
@@ -40,7 +41,7 @@ public class Session {
     /**
      * Obtiene el perfil asociado a la sesión actual.
      * 
-     * @return perfil asociado
+     * @return el perfil asociado a la sesión
      */
     public Profile getCurrentProfile() {
         return currentProfile;
@@ -49,7 +50,7 @@ public class Session {
     /**
      * Establece el perfil asociado a la sesión actual.
      * 
-     * @param currentProfile nuevo perfil asociado
+     * @param currentProfile el nuevo perfil asociado a la sesión
      */
     public void setCurrentProfile(Profile currentProfile) {
         this.currentProfile = currentProfile;

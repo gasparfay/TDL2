@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Representa una sesión en ejecución de la plataforma de streaming.
- * Mantiene la sesión del cliente (cuenta y perfil activos) y centraliza
- * el acceso a sus funcionalidades a través de esta instancia.
+ * Representa un cliente en la plataforma de streaming.
+ * Mantiene la sesión activa del cliente y las cuentas asociadas.
  * 
  * @author Grupo 8
- * @version 1.1
+ * @version 1.0
  * @see Account
+ * @see Session
  */
 public class Client {
     /**
@@ -29,6 +29,6 @@ public class Client {
      */
     public Client() {
         this.session = new Session();
-        this.accounts = new ArrayList<Account> (); // Inicializa como una lista vacía
+        this.accounts = new ArrayList<>();
     }
 }
