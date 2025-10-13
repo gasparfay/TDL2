@@ -1,7 +1,5 @@
 package model;
 
-import java.util.UUID;
-
 /**
  * Representa una sesión de usuario en la plataforma de streaming.
  *
@@ -11,71 +9,48 @@ import java.util.UUID;
  */
 public class Session {
     /**
-     * Identificador único de la sesión.
+     * Cuenta asociada a la sesión actual.
      */
-    private UUID id;
+    private Account currentAccount;
 
     /**
-     * Identificador de la cuenta asociada a la sesión.
+     * Perfil asociado a la sesión actual.
      */
-    private UUID accId;
+    private Profile currentProfile;
 
     /**
-     * Indica si el usuario tiene privilegios de administrador.
-     */
-    private boolean isAdmin;
-
-    /**
-     * Obtiene el identificador único de la sesión.
+     * Obtiene la cuenta asociada a la sesión actual.
      * 
-     * @return id de la sesión
+     * @return cuenta asociada
      */
-    public UUID getId() {
-        return id;
+    public Account getCurrentAccount() {
+        return currentAccount;
     }
 
     /**
-     * Establece el identificador único de la sesión.
+     * Establece la cuenta asociada a la sesión actual.
      * 
-     * @param id nuevo id de la sesión
+     * @param currentAccount nueva cuenta asociada
      */
-    public void setId(UUID id) {
-        this.id = id;
+    public void setCurrentAccount(Account currentAccount) {
+        this.currentAccount = currentAccount;
     }
 
     /**
-     * Obtiene el identificador de la cuenta asociada.
+     * Obtiene el perfil asociado a la sesión actual.
      * 
-     * @return id de la cuenta
+     * @return perfil asociado
      */
-    public UUID getAccId() {
-        return accId;
+    public Profile getCurrentProfile() {
+        return currentProfile;
     }
 
     /**
-     * Establece el identificador de la cuenta asociada.
+     * Establece el perfil asociado a la sesión actual.
      * 
-     * @param accId nuevo id de la cuenta
+     * @param currentProfile nuevo perfil asociado
      */
-    public void setAccId(UUID accId) {
-        this.accId = accId;
-    }
-
-    /**
-     * Obtiene si el usuario es administrador.
-     * 
-     * @return true si es administrador, false si no
-     */
-    public boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    /**
-     * Establece si el usuario actual es administrador.
-     * 
-     * @param isAdmin true si es administrador, false si no
-     */
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setCurrentProfile(Profile currentProfile) {
+        this.currentProfile = currentProfile;
     }
 }
