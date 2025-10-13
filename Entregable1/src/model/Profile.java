@@ -33,12 +33,48 @@ public class Profile {
 	// private EnumSet<Genre> genres;
 
 	/**
+	 * Historial de visualizaciones del perfil. Ubicado en el diagrama UML de clases.
+	 * Relación: Un Profile tiene un historial de visualizaciones.
+	 */
+	//private WatchHistory watchHistory;
+
+	 /**
+	  * Lista de reviews del perfil. Ubicado en el diagrama UML de clases.
+	  * Relación: Un Profile puede escribir múltiples reviews.
+	  */
+	 //private List<Review> profileReviews;
+
+	/**
+	 * Estadisticas del perfil. Ubicado en el diagrama UML de clases.
+	 * Relación: Un Profile tiene asociadas sus estadísticas de visualización y géneros favoritos.
+	 */
+	// private ProfileStats stats;
+
+	/**
+	 * Listas personalizadas de contenidos con un nombre asociado. Ubicado en el diagrama UML de clases.
+	 * Relación: Un Profile puede tener múltiples listas personalizadas.
+	 */
+	// private List<CustomContentList> customLists;
+
+	/**
+	 * Lista ,con un nombre asociado, de contenido sugerido basada en sus preferencias y hábitos de visualización. 
+	 * Ubicado en el diagrama UML de clases.
+	 */
+	// private CustomContentList suggestedContentList;
+
+	/**
      * Crea un nuevo perfil con el nombre y el idioma especificados.
      * Inicializa el identificador único del perfil.
      *
      * @param name nombre del perfil
      */
+
 	public Profile(String name /*, Language lang*/) {
+	//  this.watchHistory = new WatchHistory();
+	//  this.profileReviews = new LinkedList<Review>();
+	//  this.stats = new ProfileStats();
+	//  this.customLists = new LinkedList<CustomContentList>();
+	//  this.suggestedContentList = new CustomContentList();
         this.profileId = UUID.randomUUID();
         this.name = name;
     //  this.lang = lang;
@@ -52,15 +88,6 @@ public class Profile {
 	 */
 	public UUID getProfileId() {
 		return profileId;
-	}
-
-	/**
-	 * Establece el identificador único del perfil.
-	 * 
-	 * @param profileId nuevo profileId del perfil
-	 */
-	public void setProfileId(UUID profileId) {
-		this.profileId = profileId;
 	}
 
 	/**
@@ -124,4 +151,54 @@ public class Profile {
 	 * this.genres = genres;
 	 * }
 	 */
+
+	/**
+     * Obtiene el historial de contenido visualizdo por el perfil.
+     * 
+     * @return historial de contenido visualizado
+     */
+	/* 
+    public WatchHistory getWatchHistory() {
+        return watchHistory;
+    }*/
+
+    /**
+     * Obtiene la lista de reviews del perfil.
+     * 
+     * @return lista de reviews
+     */
+    /*public List<Review> getProfileReviews() {
+        return profileReviews;
+    }*/
+
+
+
+    /**
+     * Obtiene las estadísticas del perfil.
+     * 
+     * @return estadísticas del perfil
+     */
+    /*public ProfileStats getStats() {
+        return stats;
+    }*/
+
+
+    /**
+     * Obtiene las listas personalizadas de contenidos del perfil.
+     * 
+     * @return listas personalizadas de contenidos
+     */
+    /*public List<CustomContentList> getCustomLists() {
+        return customLists;
+    }*/
+
+    /**
+     * Obtiene la lista de contenido sugerido para el perfil.
+     * 
+     * @return lista de contenido sugerido
+     */
+    /*public List<CustomContentContent> getSuggestedContentList() {
+        return suggestedContentList;
+    }*/
+
 }
