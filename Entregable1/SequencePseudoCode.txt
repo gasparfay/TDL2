@@ -2,13 +2,11 @@
 mientras(cliente.iniciarSesion(miEmail, miPsw) sea falso);
 
 //DESDE CLIENTE
-devolver (accountManager.autenthicate(miEmail, miPsw, sesion));
+devolver (login(miEmail, miPsw, sesion));  //el metodo login busca la cuenta por email
 
-//DESDE GESTOR CUENTAS
-acc=cuentas.buscarCuenta(miEmail);
-si(acc.getPsw() igual a psw)
-    sesion.setAccId(acc.getId());
-    sesion.setIsAdmin(acc.isAdmin());
+//DESDE CUENTA
+si(estaCuenta.getPsw() igual a miPsw)
+    sesion.setAccount(estaCuenta)
     devolver verdadero;
 sino 
     devolver falso ;
