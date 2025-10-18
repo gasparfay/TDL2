@@ -1,4 +1,4 @@
-package TDL2.Entregable2.service;
+package service;
 
 public class AppService {
 
