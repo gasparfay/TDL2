@@ -1,4 +1,4 @@
-package TDL2.Entregable2.dao;
+package dao;
 
 import database.DBManager;
 import model.DatosPersonales;
