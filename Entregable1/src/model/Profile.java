@@ -63,14 +63,19 @@ public class Profile {
      */
     // private CustomContentList suggestedContentList;
 
-    /**
-     * Crea un nuevo perfil con el nombre especificado.
+	/**
+     * Crea un nuevo perfil con el nombre y el idioma especificados.
      * Inicializa el identificador único del perfil.
      *
      * @param name nombre del perfil
      */
 
 	public Profile(String name /*, Language lang*/) {
+	//  this.watchHistory = new WatchHistory();
+	//  this.profileReviews = new LinkedList<Review>();
+	//  this.stats = new ProfileStats();
+	//  this.customLists = new LinkedList<CustomContentList>();
+	//  this.suggestedContentList = new CustomContentList();
         this.profileId = UUID.randomUUID();
         this.name = name;
     //  this.lang = lang;
