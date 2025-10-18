@@ -1,4 +1,6 @@
+package service;
 import java.sql.*;
+
 public class MyConnection {
 	private static Connection con = null;
 	
