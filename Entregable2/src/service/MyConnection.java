@@ -17,6 +17,7 @@ public class MyConnection {
 	public static Connection getConnection() {
 		return con;
 	}
+	
 	public static void disconnect() {
 		//Cierre de conexión
 		try {

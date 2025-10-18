@@ -1,5 +1,6 @@
-package model;
-
-public class Resenia {
-
-}
+//package model;
+//
+//public class Resenia {
+//
+//}
+//
