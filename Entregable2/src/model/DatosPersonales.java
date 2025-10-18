@@ -1,4 +1,4 @@
-package TDL2.Entregable2.src.model;
+package model;
 
 public class DatosPersonales {
     private int id;

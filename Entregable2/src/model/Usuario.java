@@ -1,4 +1,4 @@
-package TDL2.Entregable2.model;
+package model;
 
 public class Usuario {
 

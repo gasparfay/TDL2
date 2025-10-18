@@ -1,7 +1,7 @@
-package TDL2.Entregable2.dao;
+package dao;
 
-import model.Usuario;
 import java.util.List;
+import model.Usuario;
 
 public interface UsuarioDAO {
     void registrarUsuario(Usuario usuario);
