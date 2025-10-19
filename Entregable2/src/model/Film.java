@@ -1,53 +1,30 @@
 package model;
 import java.time.Duration;
-import java.util.EnumSet;
-import java.util.List;
-
 
 
 public class Film {
-  String title;
+    String title;
 
-  List<String> cast;
+    String director;
 
-  String director;
+    String synopsis;
 
-  String synopsis;
+    Duration duration;
 
-  Duration duration;
+    Genre genre;
 
-  EnumSet<Language> audioLangs;
-
-  EnumSet<Language> subtitleTracks;
-
-  EnumSet<Genre> genres;
-
-  EnumSet<Country> availableCountries;
-
-  boolean isPublished;
-
-    public Film(String title, List<String> cast, String director, String synopsis, Duration duration,
-        EnumSet<Language> audioLangs, EnumSet<Language> subtitleTracks,
-        EnumSet<Genre> genres, EnumSet<Country> availableCountries, boolean isPublished) {
+    public Film(String title, String director, String synopsis, Duration duration, Genre genre) {
         this.title = title;
-        this.cast = cast;
         this.director = director;
         this.synopsis = synopsis;
         this.duration = duration;
-        this.audioLangs = audioLangs;
-        this.subtitleTracks = subtitleTracks;
-        this.genres = genres;
-        this.availableCountries = availableCountries;
-        this.isPublished = isPublished;
+        this.genre = genre;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public List<String> getCast() {
-        return cast;
-    }
 
     public String getDirector() {
         return director;
@@ -60,37 +37,12 @@ public class Film {
     public Duration getDuration() {
         return duration;
     }
-
-    public EnumSet<Language> getAudioLangs() {
-        return audioLangs;
-    }
-
-    public EnumSet<Language> getSubtitleTracks() {
-        return subtitleTracks;
-    }
-
-    public UUID getContentId() {
-        return contentId;
-    }
-
-    public EnumSet<Genre> getGenres() {
-        return genres;
-    }
-
-    public EnumSet<Country> getAvailableCountries() {
-        return availableCountries;
-    }
-
-    public boolean isPublished() {
-        return isPublished;
+    public Genre getGenre() {
+        return genre;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setCast(List<String> cast) {
-        this.cast = cast;
     }
 
     public void setDirector(String director) {
@@ -105,26 +57,7 @@ public class Film {
         this.duration = duration;
     }
 
-    public void setAudioLangs(EnumSet<Language> audioLangs) {
-        this.audioLangs = audioLangs;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
-
-    public void setSubtitleTracks(EnumSet<Language> subtitleTracks) {
-        this.subtitleTracks = subtitleTracks;
-    }
-
-
-    public void setGenres(EnumSet<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public void setAvailableCountries(EnumSet<Country> availableCountries) {
-        this.availableCountries = availableCountries;
-    }
-
-    public void setPublished(boolean published) {
-        this.isPublished = published;
-    }
-
-    
 }
