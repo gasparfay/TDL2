@@ -12,7 +12,7 @@ public class ReviewDAOjdbc implements ReviewDAO {
 		this.con = MyConnection.getConnection();
 	}
 
-    public void cargarActivo(Review review) {
+    public void submitReview (Review review) {
 		try {
 			String query = "INSERT INTO review(rating,text,creationDate,reviewStatus,lastModified) VALUES(?,?,?,?,?)";
 			PreparedStatement st = con.prepareStatement(query);
