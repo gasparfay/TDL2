@@ -8,7 +8,7 @@ public class MyConnection {
 	
 	static {	
 		try {
-			con = DriverManager.getConnection("jdbc:sqlite:data/pepe.db");
+			con = DriverManager.getConnection("jdbc:sqlite:data/TDL2.db");
 		} catch (SQLException e) {
 			System.out.print("Error en la conexión con la BD: " + e.getMessage());
 		}
