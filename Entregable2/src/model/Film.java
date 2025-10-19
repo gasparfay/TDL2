@@ -2,7 +2,7 @@ package model;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
+
 
 
 public class Film {
@@ -19,8 +19,6 @@ public class Film {
   EnumSet<Language> audioLangs;
 
   EnumSet<Language> subtitleTracks;
-
-  UUID contentId;
 
   EnumSet<Genre> genres;
 
@@ -115,9 +113,6 @@ public class Film {
         this.subtitleTracks = subtitleTracks;
     }
 
-    public void setContentId(UUID contentId) {
-        this.contentId = contentId;
-    }
 
     public void setGenres(EnumSet<Genre> genres) {
         this.genres = genres;
