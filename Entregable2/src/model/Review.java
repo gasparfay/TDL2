@@ -8,20 +8,14 @@ public class Review {
     private String text;
     private Date creationDate;
     private ReviewStatus status;
-    private Date lastModified;
 
  
     public Review(Rating rating, String text, Date creationDate) {
         this.rating = rating;
         this.text = text;
         this.creationDate = creationDate;
-        // Se puede inicializar el estado por defecto, por ejemplo, como PENDIENTE.
         this.status = ReviewStatus.PENDING;
-        // La fecha de modificación inicial puede ser la misma que la de creación.
-        this.lastModified = creationDate;
     }
-
-    // --- Getters y Setters ---
 
     public Rating getRating() {
         return rating;
@@ -55,11 +49,4 @@ public class Review {
         this.status = status;
     }
 
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
 }
