@@ -4,10 +4,13 @@ import java.util.Date;
 
 public class Review {
 
+    private int revId;
     private Rating rating;
     private String text;
     private Date creationDate;
     private ReviewStatus status;
+    private int filmId;
+    private int accountId;
 
  
     public Review(Rating rating, String text, Date creationDate) {

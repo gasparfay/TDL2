@@ -1,9 +1,13 @@
 package dao;
 
-import model.ReviewStatus;
+import java.sql.SQLException;
+import java.util.List;
+import model.*;
 
 public interface ReviewDAO {
-    public void submitReview(int userId, int filmId, String reviewText) throws Exception;
-    public ReviewStatus getReviewStatus(int reviewId) throws Exception;
-    public void updateReviewStatus(int reviewId, String status) throws Exception;
+    void loadReview(Review rev) throws SQLException;  ;
+    List<Review> findPending() throws SQLException;  ;
+    void approve(Review rev) throws SQLException;  ;
+    List<Review> findByFilm(int filmId) throws SQLException;
+    List<Review> findByAccount(int accountId) throws SQLException;
 }

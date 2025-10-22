@@ -3,15 +3,12 @@ import java.time.Duration;
 
 
 public class Film {
-    String title;
-
-    String director;
-
-    String synopsis;
-
-    Duration duration;
-
-    Genre genre;
+    private int filmId;
+    private String title;
+    private String director;
+    private String synopsis;
+    private Duration duration;
+    private Genre genre;
 
     public Film(String title, String director, String synopsis, Duration duration, Genre genre) {
         this.title = title;
