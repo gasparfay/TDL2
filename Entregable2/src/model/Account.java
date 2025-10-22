@@ -1,176 +1,66 @@
 package model;
 
-import java.util.UUID;
-
-/**
- * Representa una cuenta de usuario en la plataforma de streaming.
- *
- * @author Grupo 8
- * @version 1.0
- * @see Profile
- */
 public class Account {
-	/**
-	 * Identificador único de la cuenta.
-	 */
-	private UUID accId;
-
-	/**
-	 * Correo electrónico del usuario.
-	 */
+	private int accId;
 	private String email;
-
-	/**
-	 * Contraseña de la cuenta.
-	 */
 	private String password;
-
-	/**
-	 * Tipo de suscripción de la cuenta. Es un valor del enum Subscription, que esta
-	 * creado en el diagrama UML de clases.
-	 */
-	// private Subscription subscriptionType;
-
-	/**
-	 * Cantidad de perfiles asociados a la cuenta. De 0 a 5.
-	 */
 	private int profileAmount;
+	//private Profile[] profiles;
 
-	/**
-	 * Vector de perfiles asociados a la cuenta (máximo 5).
-	 */
-	private Profile[] profiles;
-
-	/**
-	 * Indica si la cuenta tiene privilegios de administrador.
-	 */
-	private boolean isAdmin;
-	/**
-	 * Reporte financiero asociado a la cuenta.
-	 * Relación: Se asocia a la cuenta para que el cliente no cree
-	 * instancias de FinancialReport cada vez que se cambie de usuario.
-	 */
-	// private FinancialReport financialReport;
-
-	/**
-     * Crea una nueva cuenta con el email, contraseña y tipo de suscripción especificados.
-     * Inicializa el identificador único de la cuenta y el vector de perfiles.
-     * Genera el reporte financiero asociado a la cuenta.
-     * @param email correo electrónico del usuario
-     * @param pwd contraseña de la cuenta
-     */
-    public Account(String email, String pwd /* , Subscription sub*/) {
-        this.accId = UUID.randomUUID();
+    public Account(String email, String pwd, int accId) {
+        this.accId = accId;
         this.email = email;
         this.password = pwd;
-    //  this.subscriptionType = sub;
         this.profileAmount = 0;
-        this.profiles = new Profile[5];
-        this.isAdmin = false;
-	//  this.financialReport = new FinancialReport(this.susbscriptionType);
+        //this.profiles = new Profile[5];
     }
 
-	/**
-	 * Obtiene el identificador único de la cuenta.
-	 * 
-	 * @return accId de la cuenta
-	 */
-	public UUID getAccId() {
+	
+	public int getAccId() {
 		return accId;
 	}
 
-	/**
-	 * Establece el identificador único de la cuenta.
-	 * 
-	 * @param accId nuevo accId de la cuenta
-	 */
-	public void setAccId(UUID accId) {
+
+	public void setAccId(int accId) {
 		this.accId = accId;
 	}
 
-	/**
-	 * Obtiene el correo electrónico del usuario.
-	 * 
-	 * @return email del usuario
-	 */
+
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * Establece el correo electrónico del usuario.
-	 * 
-	 * @param email nuevo email del usuario
-	 */
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * Obtiene la contraseña de la cuenta.
-	 * 
-	 * @return contraseña
-	 */
+
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * Establece la contraseña de la cuenta.
-	 * 
-	 * @param password nueva contraseña
-	 */
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/**
-	 * Obtiene el tipo de suscripción de la cuenta.
-	 * 
-	 * @return tipo de suscripción
-	 */
-	/*
-	 * public Subscription getSubscriptionType() {
-	 * return subscriptionType;
-	 * }
-	 */
-
-	/**
-	 * Establece el tipo de suscripción de la cuenta.
-	 * 
-	 * @param subscriptionType nuevo tipo de suscripción.
-	 */
-	/*
-	 * public void setSubscriptionType(Subscription subscriptionType) {
-	 * this.subscriptionType = subscriptionType;
-	 * }
-	 */
-
-	/**
-	 * Obtiene la cantidad de perfiles asociados a la cuenta.
-	 * 
-	 * @return cantidad de perfiles
-	 */
 	public int getProfileAmount() {
 		return profileAmount;
 	}
 
-	/**
-	 * Obtiene el vector de perfiles asociados a la cuenta.
-	 * 
-	 * @return vector de perfiles (Profile[])
-	 * @see Profile
-	 */
-	public Profile[] getProfiles() {
-		return profiles;
+	public void setProfileAmount(int profileAmount) {
+		this.profileAmount = profileAmount;
 	}
 
-	/**
-	 * Devuelve si la cuenta es de administrador.
-	 * 
-	 * @return true si es admin, false si no
-	 */
-	public boolean getIsadmin() {
-		return isAdmin;
-	}
+
+	/*public Profile[] getProfiles() {
+		return profiles;
+	}*/
+
+	/*public void addProfile(Profile p) {
+		this.profiles[profileAmount] = p;
+		this.profileAmount++;
+	}*/
+
 }
