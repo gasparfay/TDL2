@@ -22,7 +22,6 @@ public class Film {
         return title;
     }
 
-
     public String getDirector() {
         return director;
     }

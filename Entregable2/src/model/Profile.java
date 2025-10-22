@@ -9,7 +9,6 @@ public class Profile {
     private List<Review> profileReviews;
 
 	public Profile(String name) {
-	    
         this.name = name;
     }
 

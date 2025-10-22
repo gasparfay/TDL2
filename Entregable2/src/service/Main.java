@@ -1,26 +1,70 @@
 package service;
 import java.sql.*;
 import java.util.Scanner;
-import model.Account;
+import model.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
 	    try {
             Connection con = MyConnection.getConnection(); 
             TableCreator.createTables(con);
+            Scanner in = new Scanner(System.in);
+            DBOperations dbOps = new DBOperations();
+            int opcion;
+            do{
+                mostrarMenuPrincipal();
+                opcion = in.nextInt();
+                switch(opcion){
+                    case 1:
+                        registrarCuenta(in,dbOps);
+                        break;
+                    case 2:
+                        //registrarPerfil(in);
+                        break;
+                    case 3:
+                        //registrarPelicula(in);
+                        break;
+                    case 4:
+                        //listarUsuarios(in);
+                        break;
+                    case 5:
+                        //listarPeliculas(in);
+                        break;
+                    case 6:
+                        //registrarResenia(in)
+                        break;
+                    case 7:
+                        //aprobarResenia(in);
+                        break;
+                    case 8:
+                        System.out.print("Fin del programa");
+                        break;
+                    default:
+                        System.out.println("Opción inválida. Intente nuevamente.");
+                }
+            }while(opcion!=8);
+            in.close();
 		    MyConnection.disconnect();
         } catch (SQLException e) {  
             System.out.print("Error en la operación con la BD: " + e.getMessage());
         }
     }
 
-    public void ingresoDeDatos(Scanner in){
-        Account account;
-        account= crearCuenta(in);
+
+    public static void mostrarMenuPrincipal() {
+        System.out.println("- Ingrese la operación que desee realizar -");
+        System.out.println("1. Registrar nueva cuenta");
+        System.out.println("2. Registrar perfil");
+        System.out.println("3. Registrar película");
+        System.out.println("4. Listar usuarios");
+        System.out.println("5. Listar películas");
+        System.out.println("6. Registrar reseña");
+        System.out.println("7. Aprobar reseña");
+        System.out.println("8. Salir");
+        System.out.print("> ");
     }
 
-    public Account crearCuenta(Scanner in){
+    public static void registrarCuenta(Scanner in, DBOperations dbOps) {
         String regex = "^[a-zA-Z0-9._%+-]+@(gmail|hotmail|yahoo)\\.com$"; //Solo acepta dominios comunes
         String email;
         String password;
@@ -41,6 +85,8 @@ public class Main {
         System.out.println();
         System.out.println("Sus datos son los correctos? (S/N)");
         } while (in.next().equalsIgnoreCase("N"));
-        return new Account(email, password);
+
+        Account acc=new Account(email, password);
+        dbOps.loadAccount(acc);
     }
 }   

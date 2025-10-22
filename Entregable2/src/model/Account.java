@@ -7,8 +7,7 @@ public class Account {
 	private int profileAmount;
 	//private Profile[] profiles;
 
-    public Account(String email, String pwd, int accId) {
-        this.accId = accId;
+    public Account(String email, String pwd) {
         this.email = email;
         this.password = pwd;
         this.profileAmount = 0;
