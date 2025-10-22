@@ -12,4 +12,4 @@ Esta entrega modela, a nivel conceptual y con un prototipo de código, una **pla
 - Este README con una descripción general del trabajo.
 
 
-Fay Dylan Gaspar y Giovagnoli Franco Ruben | Grupo 8 | 15/09/2025
+Fay Dylan Gaspar y Giovagnoli Franco Ruben | Grupo 8 | 20/10/2025

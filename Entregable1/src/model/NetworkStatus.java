@@ -1,9 +1,13 @@
-package model;
-
 /**
  * Representa el estado de la red para la plataforma de streaming.
  * Existe una unica instacia de este clase por cliente.
+ * 
+ * @author Grupo 8
+ * @version 1.0
  */
+
+ package model;
+
 public class NetworkStatus {
 
     /**
