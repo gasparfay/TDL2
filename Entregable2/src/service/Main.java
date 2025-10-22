@@ -1,7 +1,6 @@
 package service;
 import java.sql.*;
 import java.util.Scanner;
-import model.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,14 +8,14 @@ public class Main {
             Connection con = MyConnection.getConnection(); 
             TableCreator.createTables(con);
             Scanner in = new Scanner(System.in);
-            DBOperations dbOps = new DBOperations();
+            Operations ops = new Operations();
             int opcion;
             do{
                 mostrarMenuPrincipal();
                 opcion = in.nextInt();
                 switch(opcion){
                     case 1:
-                        registrarCuenta(in,dbOps);
+                        ops.accountRegister(in);
                         break;
                     case 2:
                         //registrarPerfil(in);
@@ -64,29 +63,5 @@ public class Main {
         System.out.print("> ");
     }
 
-    public static void registrarCuenta(Scanner in, DBOperations dbOps) {
-        String regex = "^[a-zA-Z0-9._%+-]+@(gmail|hotmail|yahoo)\\.com$"; //Solo acepta dominios comunes
-        String email;
-        String password;
-        do{
-        System.out.println("Registro de usuario");
-        System.out.println();
-        do {
-            System.out.print("Ingrese su email:");
-            email = in.next();
-            System.out.println();
-            if (!email.matches(regex)) {
-                System.out.println("Formato de email inválido. Intente nuevamente.");
-            }
-        } while (!email.matches(regex)); 
-        System.out.println();
-        System.out.print("Ingrese su contraseña:");
-        password = in.next();
-        System.out.println();
-        System.out.println("Sus datos son los correctos? (S/N)");
-        } while (in.next().equalsIgnoreCase("N"));
-
-        Account acc=new Account(email, password);
-        dbOps.loadAccount(acc);
-    }
+    
 }   

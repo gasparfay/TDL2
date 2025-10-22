@@ -14,7 +14,7 @@ public class AccountDAOjdbc implements AccountDAO {
         try{
             con.setAutoCommit(false);
 
-            String insertSql = "INSERT INTO accounts (email, password) VALUES (?, ?)";
+            String insertSql = "INSERT INTO ACCOUNT (email, password) VALUES (?, ?)";
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                 ps.setString(1, account.getEmail());
                 ps.setString(2, account.getPassword());
