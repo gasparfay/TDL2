@@ -26,7 +26,8 @@ public class Operations {
             System.out.println();
             do {
                 System.out.print("Ingrese el nombre del perfil (solo letras): ");
-                name = in.next();
+                name = in.nextLine();
+
                 validName = name.matches("[a-zA-Z]+");
                 
                 if (!validName) {
@@ -80,10 +81,13 @@ public class Operations {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         String email;
         String password;
-        boolean exist=false;
-        boolean format=true;
+
         do {
+            boolean exist;
+            boolean format;
             do {
+                exist=false;
+                format=true;
                 System.out.print("Ingrese su email: ");
                 email = in.next();
                 System.out.println();
@@ -204,10 +208,59 @@ public class Operations {
         }
 
         System.out.println("\nCuentas registradas:");
-        System.out.println("Email\t\tID");
-        System.out.println("------------------------");
+        String format = "%-5s   %-40s%n";
+        System.out.printf(format, "ID", "Email");
+        System.out.println("-".repeat(48));
         for (Account acc : accounts) {
-            System.out.printf("%s\t\t%d%n",acc.getEmail(),acc.getAccId() );
+            System.out.printf(format, acc.getAccId(), acc.getEmail());
+        }
+    }
+
+    public void showFilms(Scanner in) {
+        List<Film> films = filmDAO.findAll();
+        if (films == null) {
+            return;
+        }
+        if (films.isEmpty()) {
+            System.out.println("No hay películas registradas en el sistema.");
+            return;
+        }
+
+        System.out.println("\nSeleccione el criterio de ordenamiento:");
+        System.out.println("1. Ordenar por título");
+        System.out.println("2. Ordenar por duración");
+        System.out.println("3. Ordenar por género");
+        System.out.println("4. Sin ordenar");
+        System.out.print("Ingrese su opción (1-4): ");
+        
+        int option = in.nextInt();
+        
+        switch (option) {
+            case 1:
+                films.sort(new FilmComparatorTitle());
+                break;
+            case 2:
+                films.sort(new FilmComparatorDuration());
+                break;
+            case 3:
+                films.sort(new FilmComparatorGenre());
+                break;
+            default:
+                // No ordenar
+                break;
+        }
+
+        System.out.println("\nPelículas registradas:");
+        String format = "%-5s   %-30s   %-30s   %-15s   %-15s%n";
+        System.out.printf(format, "ID", "Título", "Director", "Duración", "Género");
+        System.out.println("-".repeat(100));
+        for (Film film : films) {
+            System.out.printf(format,
+                film.getFilmId(),
+                film.getTitle(),
+                film.getDirector(),
+                film.getDuration().toMinutes() + " mins",
+                film.getGenre());
         }
     }
 }

@@ -27,7 +27,7 @@ public class Main {
                         ops.showAccounts(in);
                         break;
                     case 5:
-                        //listarPeliculas(in);
+                        ops.showFilms(in);
                         break;
                     case 6:
                         //registrarResenia(in)
@@ -51,7 +51,7 @@ public class Main {
 
 
     public static void mostrarMenuPrincipal() {
-        System.out.println("\n\n\n--------------------------------------------");
+        System.out.println("\n--------------------------------------------");
         System.out.println("- Ingrese la operación que desee realizar -");
         System.out.println("1. Registrar perfil");
         System.out.println("2. Registrar nueva cuenta");

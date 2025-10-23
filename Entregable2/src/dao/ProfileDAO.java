@@ -5,7 +5,6 @@ import model.*;
 
 public interface ProfileDAO {
     boolean loadProfile(Profile profile);
-    //List<Profile> findByAccount(Account acc);
     List<Profile> findAll();
     boolean associateWithAccount(Profile profile, Account account);
 }
