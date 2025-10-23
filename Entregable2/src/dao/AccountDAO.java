@@ -1,10 +1,10 @@
 package dao;
 
-import model.*;
+import java.util.List;
+import model.Account;
 
 public interface AccountDAO {
-    void loadAccount(Account account);
-    //List<Account> findAll() throws SQLException;
-    //Account findByEmail(String email) throws SQLException;
-    //boolean existsEmail(String email) throws SQLException;  
+    boolean loadAccount(Account account);
+    boolean emailExists(String email);
+    List<Account> findAll();
 }

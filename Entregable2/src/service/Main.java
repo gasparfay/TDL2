@@ -15,16 +15,16 @@ public class Main {
                 opcion = in.nextInt();
                 switch(opcion){
                     case 1:
-                        ops.accountRegister(in);
+                        ops.profileRegistration(in);
                         break;
                     case 2:
-                        //registrarPerfil(in);
+                        ops.accountRegistration(in);
                         break;
                     case 3:
-                        //registrarPelicula(in);
+                        ops.filmRegistration(in);
                         break;
                     case 4:
-                        //listarUsuarios(in);
+                        ops.showAccounts(in);
                         break;
                     case 5:
                         //listarPeliculas(in);
@@ -51,9 +51,10 @@ public class Main {
 
 
     public static void mostrarMenuPrincipal() {
+        System.out.println("\n\n\n--------------------------------------------");
         System.out.println("- Ingrese la operación que desee realizar -");
-        System.out.println("1. Registrar nueva cuenta");
-        System.out.println("2. Registrar perfil");
+        System.out.println("1. Registrar perfil");
+        System.out.println("2. Registrar nueva cuenta");
         System.out.println("3. Registrar película");
         System.out.println("4. Listar usuarios");
         System.out.println("5. Listar películas");

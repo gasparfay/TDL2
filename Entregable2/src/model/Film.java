@@ -10,12 +10,19 @@ public class Film {
     private Duration duration;
     private Genre genre;
 
-    public Film(String title, String director, String synopsis, Duration duration, Genre genre) {
+    public Film(String title, String director, Duration duration, Genre genre) {
         this.title = title;
         this.director = director;
-        this.synopsis = synopsis;
         this.duration = duration;
         this.genre = genre;
+    }
+
+    public int getFilmId() {
+        return filmId;
+    }
+
+    public void setFilmId(int filmId) {
+        this.filmId = filmId;
     }
 
     public String getTitle() {
