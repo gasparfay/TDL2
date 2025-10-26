@@ -2,6 +2,7 @@ package service;
 
 import dao.*;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import model.*;
@@ -10,11 +11,13 @@ public class Operations {
     private AccountDAO accountDAO;
     private ProfileDAO profileDAO;
     private FilmDAO filmDAO;
+    private ReviewDAO reviewDAO;
 
     public Operations() {
         this.accountDAO = new AccountDAOjdbc(MyConnection.getConnection());
         this.profileDAO = new ProfileDAOjdbc(MyConnection.getConnection());
         this.filmDAO = new FilmDAOjdbc(MyConnection.getConnection());
+        //this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
     }
 
     public void profileRegistration(Scanner in) {
@@ -41,8 +44,11 @@ public class Operations {
         } while (in.next().equalsIgnoreCase("N"));
 
         Profile profile = new Profile(name);
-        profileDAO.loadProfile(profile);
-        System.out.println("Perfil registrado exitosamente!");
+        if (profileDAO.loadProfile(profile)) {
+            System.out.println("Perfil registrada exitosamente!");
+        } else {
+            System.out.println("Error al registrar el perfil.");
+        }
     }
     
     public void accountRegistration(Scanner in) {
@@ -198,7 +204,7 @@ public class Operations {
 
         System.out.println("\nSeleccione el criterio de ordenamiento:");
         System.out.println("1. Ordenar por email");
-        System.out.println("2. Sin ordenar");
+        System.out.println("2. Ordenar por ID");
         System.out.print("Ingrese su opción (1-2): ");
         
         int option = in.nextInt();
@@ -230,7 +236,7 @@ public class Operations {
         System.out.println("1. Ordenar por título");
         System.out.println("2. Ordenar por duración");
         System.out.println("3. Ordenar por género");
-        System.out.println("4. Sin ordenar");
+        System.out.println("4. Ordenar por ID");
         System.out.print("Ingrese su opción (1-4): ");
         
         int option = in.nextInt();
@@ -263,4 +269,82 @@ public class Operations {
                 film.getGenre());
         }
     }
+
+    public void reviewRegistration(Scanner in) {
+        System.out.println("Registro de reseña");
+        System.out.println();
+        
+        //Pedir email y contraseña para identificar la cuenta
+        String email, password; 
+        Account acc;
+        do{
+            System.out.print("Ingrese su email (0 para volver atras): ");
+            email = in.nextLine();
+            if(email.equals("0")){
+                return;
+            }
+            System.out.print("Ingrese su contraseña: ");
+            password = in.nextLine();
+            acc = accountDAO.findByEmail(email);
+            if ((acc == null)  || (!acc.getPassword().equals(password))) {
+                System.out.println("Error: Email o contraseña incorrectos.");
+            } 
+        }while ((acc == null)  || (!acc.getPassword().equals(password)));
+        System.out.println("Cuenta verificada. Puede proceder a ingresar la reseña.");
+        System.out.println();
+
+        //Listar peliculas disponibles y pedir que se elija una
+        List<Film> films = filmDAO.findAll();
+        if (films.isEmpty()) {
+            System.out.println("No hay películas registradas en el sistema.");
+            return;
+        }                   
+        System.out.println("Películas disponibles:");
+        for (int i = 0; i < films.size(); i++) {                
+            System.out.printf("%d. %s%n", i + 1, films.get(i).getTitle());
+        }   
+        int filmChoice;
+        do {
+            System.out.print("\nSeleccione el número de la película que desea reseñar: ");
+            while (!in.hasNextInt()) {
+                System.out.println("Por favor, ingrese un número válido.");
+                in.next();
+            }
+            filmChoice = in.nextInt();
+        } while (filmChoice < 1 || filmChoice > films.size());  
+        in.nextLine();
+
+        Film film = films.get(filmChoice - 1);
+        System.out.println("Película seleccionada: " + film.getTitle());
+
+        // Ingreso de datos de la reseña
+        Rating rating;
+        Date creationDate=new Date();
+        System.out.print("Ingrese el texto de la reseña: ");
+        String text = in.nextLine();
+
+        System.out.println("Calificaciones disponibles:");
+        for (Rating r : Rating.values()) {
+            System.out.println("- " + r.name());
+        }
+
+        do {
+            System.out.print("Ingrese la calificación de la reseña: ");
+            String ratingInput = in.nextLine().toUpperCase();
+            try {
+                rating = Rating.valueOf(ratingInput);
+            } catch (IllegalArgumentException e) {
+                rating = null;
+                System.out.println("Calificación no válida. Por favor, seleccione una de la lista.");
+            }
+        } while (rating == null);
+
+        Review review = new Review(rating, text, creationDate);
+        //if (ReviewDAO.loadReview(review)) {
+        //    System.out.println("Reseña registrada exitosamente!");
+        //} else {
+        //    System.out.println("Error al registrar la reseña.");
+        //}
+    }
+
 }

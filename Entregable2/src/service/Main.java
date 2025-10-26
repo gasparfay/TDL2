@@ -13,6 +13,7 @@ public class Main {
             do{
                 mostrarMenuPrincipal();
                 opcion = in.nextInt();
+                in.nextLine(); 
                 switch(opcion){
                     case 1:
                         ops.profileRegistration(in);
@@ -30,7 +31,7 @@ public class Main {
                         ops.showFilms(in);
                         break;
                     case 6:
-                        //registrarResenia(in)
+                        ops.reviewRegistration(in);
                         break;
                     case 7:
                         //aprobarResenia(in);

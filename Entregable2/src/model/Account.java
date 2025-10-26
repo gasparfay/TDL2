@@ -1,13 +1,17 @@
 package model;
 
+import java.util.*;
+
 public class Account {
 	private int accId;
 	private String email;
 	private String password;
+	private List<Review> accountReviews;
 
     public Account(String email, String pwd) {
         this.email = email;
         this.password = pwd;
+		accountReviews = new ArrayList<>();
     }
 
 	
@@ -38,6 +42,14 @@ public class Account {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Review> getAccountReviews() {
+		return accountReviews;
+	}
+	
+	public void setAccountReviews(List<Review> accountReviews) {
+		this.accountReviews = accountReviews;
 	}
 
 }
