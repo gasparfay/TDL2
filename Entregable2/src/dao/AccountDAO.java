@@ -8,4 +8,5 @@ public interface AccountDAO {
     boolean emailExists(String email);
     List<Account> findAll();
     Account findById(int accId);
+    Account findByEmail(String email);
 }

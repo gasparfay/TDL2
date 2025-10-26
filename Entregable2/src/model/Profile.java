@@ -1,12 +1,9 @@
 package model;
 
-import java.util.*;
-
 public class Profile {
 
     private int profileId;
     private String name;
-    private List<Review> profileReviews;
 	private Account account;
 
 	public Profile(String name) {
@@ -28,10 +25,6 @@ public class Profile {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public List<Review> getProfileReviews() {
-        return profileReviews;
-    }
 
 	public void setAccount(Account account) {
 		this.account = account;

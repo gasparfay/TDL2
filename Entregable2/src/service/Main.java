@@ -30,7 +30,7 @@ public class Main {
                         ops.showFilms(in);
                         break;
                     case 6:
-                        //registrarResenia(in)
+                        ops.reviewRegistration(in);
                         break;
                     case 7:
                         //aprobarResenia(in);
