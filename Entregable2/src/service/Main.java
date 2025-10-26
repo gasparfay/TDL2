@@ -13,6 +13,7 @@ public class Main {
             do{
                 mostrarMenuPrincipal();
                 opcion = in.nextInt();
+                in.nextLine(); 
                 switch(opcion){
                     case 1:
                         ops.profileRegistration(in);

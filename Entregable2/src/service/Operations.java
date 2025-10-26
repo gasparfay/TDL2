@@ -11,11 +11,13 @@ public class Operations {
     private AccountDAO accountDAO;
     private ProfileDAO profileDAO;
     private FilmDAO filmDAO;
+    private ReviewDAO reviewDAO;
 
     public Operations() {
         this.accountDAO = new AccountDAOjdbc(MyConnection.getConnection());
         this.profileDAO = new ProfileDAOjdbc(MyConnection.getConnection());
         this.filmDAO = new FilmDAOjdbc(MyConnection.getConnection());
+        //this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
     }
 
     public void profileRegistration(Scanner in) {
@@ -42,8 +44,11 @@ public class Operations {
         } while (in.next().equalsIgnoreCase("N"));
 
         Profile profile = new Profile(name);
-        profileDAO.loadProfile(profile);
-        System.out.println("Perfil registrado exitosamente!");
+        if (profileDAO.loadProfile(profile)) {
+            System.out.println("Perfil registrada exitosamente!");
+        } else {
+            System.out.println("Error al registrar el perfil.");
+        }
     }
     
     public void accountRegistration(Scanner in) {
@@ -273,16 +278,18 @@ public class Operations {
         String email, password; 
         Account acc;
         do{
-            System.out.print("Ingrese su email: ");
+            System.out.print("Ingrese su email (0 para volver atras): ");
             email = in.nextLine();
+            if(email.equals("0")){
+                return;
+            }
             System.out.print("Ingrese su contraseña: ");
             password = in.nextLine();
             acc = accountDAO.findByEmail(email);
-            if (acc == null  || !acc.getPassword().equals(password)) {
+            if ((acc == null)  || (!acc.getPassword().equals(password))) {
                 System.out.println("Error: Email o contraseña incorrectos.");
-                continue;
             } 
-        }while (!acc.getPassword().equals(password));
+        }while ((acc == null)  || (!acc.getPassword().equals(password)));
         System.out.println("Cuenta verificada. Puede proceder a ingresar la reseña.");
         System.out.println();
 
@@ -311,7 +318,6 @@ public class Operations {
         System.out.println("Película seleccionada: " + film.getTitle());
 
         // Ingreso de datos de la reseña
-
         Rating rating;
         Date creationDate=new Date();
         System.out.print("Ingrese el texto de la reseña: ");
@@ -333,12 +339,12 @@ public class Operations {
             }
         } while (rating == null);
 
-
-
-
         Review review = new Review(rating, text, creationDate);
-        // Aquí debería ir la lógica para guardar la reseña en la base de datos
-        System.out.println("Reseña registrada exitosamente!");
+        //if (ReviewDAO.loadReview(review)) {
+        //    System.out.println("Reseña registrada exitosamente!");
+        //} else {
+        //    System.out.println("Error al registrar la reseña.");
+        //}
     }
 
 }
