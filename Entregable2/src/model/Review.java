@@ -1,7 +1,6 @@
 package model;
 
-import model.Account;
-import model.Film;
+
 import java.util.Date;
 
 public class Review {
