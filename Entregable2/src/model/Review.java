@@ -1,5 +1,7 @@
 package model;
 
+import model.Account;
+import model.Film;
 import java.util.Date;
 
 public class Review {
@@ -9,8 +11,8 @@ public class Review {
     private String text;
     private Date creationDate;
     private ReviewStatus status;
-    private int filmId;
-    private int accountId;
+    private Film film;
+    private Account account;
 
  
     public Review(Rating rating, String text, Date creationDate) {
