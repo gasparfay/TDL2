@@ -56,7 +56,9 @@ public class ProfileDAOjdbc implements ProfileDAO {
     @Override
     public List<Profile> findAll() {
         List<Profile> profiles = new ArrayList<>();
-        String sql = "SELECT ID, NAME, ACCOUNT_ID FROM PROFILE";
+        String sql = "SELECT p.ID, p.NAME, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
+                   + "FROM PROFILE p "
+                   + "LEFT JOIN ACCOUNT a ON p.ACCOUNT_ID = a.ID";
         
         try (Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -65,7 +67,9 @@ public class ProfileDAOjdbc implements ProfileDAO {
                 profile.setProfileId(rs.getInt("ID"));
                 int accId = rs.getInt("ACCOUNT_ID");
                 if (!rs.wasNull()) {
-                    profile.setAccount(new AccountDAOjdbc(con).findById(accId));
+                    Account account = new Account(rs.getString("EMAIL"), rs.getString("PASSWORD"));
+                    account.setAccId(accId);
+                    profile.setAccount(account);
                 }
                 profiles.add(profile);
             }
@@ -80,7 +84,11 @@ public class ProfileDAOjdbc implements ProfileDAO {
         try {
             String updateSql = "UPDATE PROFILE SET ACCOUNT_ID = ? WHERE ID = ?";
             try (PreparedStatement ps = con.prepareStatement(updateSql)) {
-                ps.setInt(1, account.getAccId());
+                if (account != null && account.getAccId() != 0) {
+                    ps.setInt(1, account.getAccId());
+                } else {
+                    ps.setNull(1, Types.INTEGER);
+                }
                 ps.setInt(2, profile.getProfileId());
                 int rowsAffected = ps.executeUpdate();
             

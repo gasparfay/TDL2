@@ -1,10 +1,10 @@
 package dao;
 
 import java.util.List;
-import model.*;
+import model.Film;
 
 public interface FilmDAO {
     boolean loadFilm(Film film);
     List<Film> findAll();
-    Film findById(int id);
+    public Film findById(int id);
 }
