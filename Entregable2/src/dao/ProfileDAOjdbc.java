@@ -18,11 +18,11 @@ public class ProfileDAOjdbc implements ProfileDAO {
             con.setAutoCommit(false);
 
             String insertSql;
-            if (profile.getAccountId() != 0) {
+            if (profile.getAccount()!=null) {
                 insertSql = "INSERT INTO PROFILE (name, account_id) VALUES (?, ?)";
                 try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                     ps.setString(1, profile.getName());
-                    ps.setInt(2, profile.getAccountId());
+                    ps.setInt(2, profile.getAccount().getAccId());
                     ps.executeUpdate();
                 }
             } else {
@@ -65,7 +65,7 @@ public class ProfileDAOjdbc implements ProfileDAO {
                 profile.setProfileId(rs.getInt("ID"));
                 int accId = rs.getInt("ACCOUNT_ID");
                 if (!rs.wasNull()) {
-                    profile.setAccountId(accId);
+                    profile.setAccount(new AccountDAOjdbc(con).findById(accId));
                 }
                 profiles.add(profile);
             }
@@ -85,7 +85,7 @@ public class ProfileDAOjdbc implements ProfileDAO {
                 int rowsAffected = ps.executeUpdate();
             
                 if (rowsAffected > 0) {
-                    profile.setAccountId(account.getAccId());
+                    profile.setAccount(account);
                     return true;
                 }
                 return false;

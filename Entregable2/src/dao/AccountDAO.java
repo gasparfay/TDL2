@@ -7,4 +7,5 @@ public interface AccountDAO {
     boolean loadAccount(Account account);
     boolean emailExists(String email);
     List<Account> findAll();
+    Account findById(int accId);
 }

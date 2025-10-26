@@ -79,4 +79,22 @@ public class AccountDAOjdbc implements AccountDAO {
         }
         return accounts;
     }
+
+    @Override
+    public Account findById(int accId) {
+        String sql = "SELECT ID, EMAIL, PASSWORD FROM ACCOUNT WHERE ID = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, accId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Account account = new Account(rs.getString("EMAIL"), rs.getString("PASSWORD"));
+                    account.setAccId(rs.getInt("ID"));
+                    return account;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar la cuenta por ID en la BD: " + e.getMessage());
+        }
+        return null;
+    }
 }
