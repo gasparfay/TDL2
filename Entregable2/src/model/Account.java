@@ -1,17 +1,17 @@
 package model;
 
-import java.util.*;
-
 public class Account {
 	private int accId;
 	private String email;
 	private String password;
-	private List<Review> accountReviews;
+	private int profileAmount;
+	//private Profile[] profiles;
 
     public Account(String email, String pwd) {
         this.email = email;
         this.password = pwd;
-		accountReviews = new ArrayList<>();
+        this.profileAmount = 0;
+        //this.profiles = new Profile[5];
     }
 
 	
@@ -44,12 +44,22 @@ public class Account {
 		this.password = password;
 	}
 
-	public List<Review> getAccountReviews() {
-		return accountReviews;
+	public int getProfileAmount() {
+		return profileAmount;
 	}
-	
-	public void setAccountReviews(List<Review> accountReviews) {
-		this.accountReviews = accountReviews;
+
+	public void setProfileAmount(int profileAmount) {
+		this.profileAmount = profileAmount;
 	}
+
+
+	/*public Profile[] getProfiles() {
+		return profiles;
+	}*/
+
+	/*public void addProfile(Profile p) {
+		this.profiles[profileAmount] = p;
+		this.profileAmount++;
+	}*/
 
 }

@@ -45,7 +45,7 @@ public class Operations {
 
         Profile profile = new Profile(name);
         if (profileDAO.loadProfile(profile)) {
-            System.out.println("Perfil registrada exitosamente!");
+            System.out.println("Perfil registrado exitosamente!");
         } else {
             System.out.println("Error al registrar el perfil.");
         }
@@ -136,22 +136,21 @@ public class Operations {
         Genre genre;
         
         do {
-            System.out.print("Ingrese el título de la película: ");
-            in.nextLine(); 
+            System.out.print("Ingrese el título de la película: \n");
             title = in.nextLine();
             
-            System.out.print("Ingrese el director: ");
+            System.out.print("Ingrese el director: \n");
             director = in.nextLine();
             
             do {
                 System.out.print("Ingrese la duración en minutos: ");
                 while (!in.hasNextDouble()) {
-                    System.out.println("Por favor, ingrese un número válido.");
+                    System.out.println("\nPor favor, ingrese un número válido.\n");
                     in.next();
                 }
                 durationMinutes = in.nextDouble();
                 if (durationMinutes <= 0) {
-                    System.out.println("La duración debe ser mayor a 0 minutos.");
+                    System.out.println("\nLa duración debe ser mayor a 0 minutos.\n");
                 }
             } while (durationMinutes <= 0);
             in.nextLine(); 
