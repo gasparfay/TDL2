@@ -6,5 +6,5 @@ import model.Film;
 public interface FilmDAO {
     boolean loadFilm(Film film);
     List<Film> findAll();
-    public Film findById(int id);
+    Film findById(int id);
 }

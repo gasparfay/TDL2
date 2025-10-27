@@ -17,7 +17,7 @@ public class Operations {
         this.accountDAO = new AccountDAOjdbc(MyConnection.getConnection());
         this.profileDAO = new ProfileDAOjdbc(MyConnection.getConnection());
         this.filmDAO = new FilmDAOjdbc(MyConnection.getConnection());
-        //this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
+        this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
     }
 
     public void profileRegistration(Scanner in) {
@@ -108,7 +108,7 @@ public class Operations {
                     exist=true;
                     continue;
                 }
-            } while (!format|| exist);
+            } while (!format || exist);
 
             System.out.print("Ingrese su contraseña: ");
             password = in.next();
@@ -339,12 +339,65 @@ public class Operations {
             }
         } while (rating == null);
 
-        Review review = new Review(rating, text, creationDate);
-        //if (ReviewDAO.loadReview(review)) {
-        //    System.out.println("Reseña registrada exitosamente!");
-        //} else {
-        //    System.out.println("Error al registrar la reseña.");
-        //}
+        Review review = new Review(rating, text, creationDate, acc, film);
+        if (reviewDAO.loadReview(review)) {
+            System.out.println("Reseña registrada exitosamente!");
+        } else {
+            System.out.println("Error al registrar la reseña.");
+        }
+    }
+
+    public void approveReview(Scanner in) {
+        List<Review> pendingReviews = reviewDAO.findPending();
+        if (pendingReviews == null) {
+            return;
+        }
+        if (pendingReviews.isEmpty()) {
+            System.out.println("No hay reseñas pendientes de aprobación.");
+            return;
+        }
+
+        System.out.println("\nReseñas pendientes de aprobación:");
+        for (int i = 0; i < pendingReviews.size(); i++) {
+            Review rev = pendingReviews.get(i);
+            System.out.printf("%d. Película: %s | Cuenta: %s | Calificación: %s | Texto: %s%n",
+                i + 1,
+                rev.getFilm().getTitle(),
+                rev.getAccount().getEmail(),
+                rev.getRating().name(),
+                rev.getText());
+        }
+
+        int reviewChoice;
+        do {
+            System.out.print("\nSeleccione el número de la reseña que desea aprobar/rechazar: ");
+            while (!in.hasNextInt()) {
+                System.out.println("Por favor, ingrese un número válido.");
+                in.next();
+            }
+            reviewChoice = in.nextInt();
+        } while (reviewChoice < 1 || reviewChoice > pendingReviews.size());
+        in.nextLine();
+
+        Review selectedReview = pendingReviews.get(reviewChoice - 1);
+
+        System.out.print("¿Desea aprobar (A) o rechazar (R) la reseña? ");
+        String decision = in.nextLine().toUpperCase();
+
+        if (decision.equals("A")) {
+            selectedReview.setStatus(ReviewStatus.APPROVED);
+        } else if (decision.equals("R")) {
+            selectedReview.setStatus(ReviewStatus.REJECTED);
+        } else {
+            System.out.println("Decisión no válida. Operación cancelada.");
+            return;
+        }
+
+        if (reviewDAO.modifyStatus(selectedReview)) {
+            System.out.println("Reseña actualizada exitosamente!");
+        } else {
+            System.out.println("Error al actualizar la reseña.");
+        }
     }
 
 }

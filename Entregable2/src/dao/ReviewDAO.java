@@ -4,7 +4,7 @@ import java.util.List;
 import model.*;
 
 public interface ReviewDAO {
-    void loadReview(Review rev);  
+    boolean loadReview(Review rev);  
     List<Review> findPending();  
     boolean modifyStatus(Review rev);  
 }

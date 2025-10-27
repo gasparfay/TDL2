@@ -14,11 +14,13 @@ public class Review {
     private Account account;
 
  
-    public Review(Rating rating, String text, Date creationDate) {
+    public Review(Rating rating, String text, Date creationDate, Account account, Film film) {
         this.rating = rating;
         this.text = text;
         this.creationDate = creationDate;
         this.status = ReviewStatus.PENDING;
+        this.account = account;
+        this.film = film;
     }
 
     public Rating getRating() {

@@ -34,7 +34,7 @@ public class Main {
                         ops.reviewRegistration(in);
                         break;
                     case 7:
-                        //aprobarResenia(in);
+                        ops.approveReview(in);
                         break;
                     case 8:
                         System.out.print("Fin del programa");

@@ -1,10 +1,8 @@
 package dao;
 
 import java.sql.*;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.*;
 
 public class ReviewDAOjdbc implements ReviewDAO {
@@ -15,15 +13,10 @@ public class ReviewDAOjdbc implements ReviewDAO {
         this.con = con;
     }
 
-<<<<<<< Updated upstream
     @Override
-    public void loadReview(Review rev) {
+    public boolean loadReview(Review rev) {
         try {
             con.setAutoCommit(false);
-=======
-    }
-
->>>>>>> Stashed changes
 
             String insertSql = "INSERT INTO REVIEW (RATING, TEXT, STATUS, CREATION_DATE, ACCOUNT_ID, FILM_ID) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
@@ -45,55 +38,56 @@ public class ReviewDAOjdbc implements ReviewDAO {
 
             con.commit();
             con.setAutoCommit(true);
+            return true;
         } catch (SQLException e) {
             try {
                 con.rollback();
                 con.setAutoCommit(true);
             } catch (SQLException ignore) {}
             System.out.println("Error al cargar la reseña en la BD: " + e.getMessage());
+            return false;
         }
     }
 
     @Override
     public List<Review> findPending() {
         List<Review> pending = new ArrayList<>();
-        String sql = "SELECT R.ID, R.RATING, R.TEXT, R.STATUS, R.CREATION_DATE, R.ACCOUNT_ID, R.FILM_ID, "
-                   + "A.EMAIL, A.PASSWORD, F.TITLE, F.DIRECTOR, F.DURATION, F.GENRE "
-                   + "FROM REVIEW R "
-                   + "JOIN ACCOUNT A ON R.ACCOUNT_ID = A.ID "
-                   + "JOIN FILM F ON R.FILM_ID = F.ID "
-                   + "WHERE R.STATUS = ?";
+        String sql = "SELECT ID, RATING, TEXT, STATUS, CREATION_DATE, ACCOUNT_ID, FILM_ID FROM REVIEW WHERE STATUS = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, ReviewStatus.PENDING.ordinal());
             try (ResultSet rs = ps.executeQuery()) {
+                AccountDAO accountDAO = new AccountDAOjdbc(con);
+                FilmDAO filmDAO = new FilmDAOjdbc(con);
                 while (rs.next()) {
                     Review review = new Review(
                         Rating.values()[rs.getInt("RATING")],
                         rs.getString("TEXT"),
-                        new java.util.Date(rs.getTimestamp("CREATION_DATE").getTime())
-                    );
+                        new java.util.Date(rs.getTimestamp("CREATION_DATE").getTime()),
+                        accountDAO.findById(rs.getInt("ACCOUNT_ID")),
+                        filmDAO.findById(rs.getInt("FILM_ID"))                   
+                        );
                     review.setRevId(rs.getInt("ID"));
                     review.setStatus(ReviewStatus.values()[rs.getInt("STATUS")]);
 
-                    Account account = new Account(rs.getString("EMAIL"), rs.getString("PASSWORD"));
-                    account.setAccId(rs.getInt("ACCOUNT_ID"));
-                    review.setAccount(account);
+                    int accId = rs.getInt("ACCOUNT_ID");
+                    Account account = accountDAO.findById(accId);
+                    if (account != null) {
+                        review.setAccount(account);
+                    }
 
-                    Film film = new Film(
-                        rs.getString("TITLE"),
-                        rs.getString("DIRECTOR"),
-                        Duration.ofMinutes((long) rs.getDouble("DURATION")),
-                        Genre.values()[rs.getInt("GENRE")]
-                    );
-                    film.setFilmId(rs.getInt("FILM_ID"));
-                    review.setFilm(film);
+                    int filmId = rs.getInt("FILM_ID");
+                    Film film = filmDAO.findById(filmId);
+                    if (film != null) {
+                        review.setFilm(film);
+                    }
 
                     pending.add(review);
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener las reseñas pendientes: " + e.getMessage());
+            pending = null;
         }
 
         return pending;
