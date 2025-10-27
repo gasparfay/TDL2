@@ -352,8 +352,8 @@ public class Operations {
         do {
             System.out.print("\nSeleccione el número de la película que desea reseñar: ");
             while (!in.hasNextInt()) {
-                System.out.println("Por favor, ingrese un número válido.");
-                in.next();
+                System.out.println("Por favor, ingrese un número válido, presione enter para intentar nuevamente.");
+                in.nextLine();
             }
             filmChoice = in.nextInt();
         } while (filmChoice < 1 || filmChoice > films.size());  
@@ -364,25 +364,36 @@ public class Operations {
 
         // Ingreso de datos de la reseña
         Rating rating;
-        Date creationDate=new Date();
-        System.out.print("Ingrese el texto de la reseña: ");
-        String text = in.nextLine();
-
-        System.out.println("Calificaciones disponibles:");
-        for (Rating r : Rating.values()) {
-            System.out.println("- " + r.name());
-        }
-
+        String text;
+        Date creationDate;
         do {
-            System.out.print("Ingrese la calificación de la reseña: ");
-            String ratingInput = in.nextLine().toUpperCase();
-            try {
-                rating = Rating.valueOf(ratingInput);
-            } catch (IllegalArgumentException e) {
-                rating = null;
-                System.out.println("Calificación no válida. Por favor, seleccione una de la lista.");
+            creationDate=new Date();
+            System.out.print("Ingrese el texto de la reseña: ");
+            text = in.nextLine();
+            
+            System.out.println("Calificaciones disponibles:");
+            for (Rating r : Rating.values()) {
+                System.out.println("- " + r.name());
             }
-        } while (rating == null);
+
+            do {
+                System.out.print("Ingrese la calificación de la reseña: ");
+                String ratingInput = in.nextLine().toUpperCase();
+                try {
+                    rating = Rating.valueOf(ratingInput);
+                } catch (IllegalArgumentException e) {
+                    rating = null;
+                    System.out.println("Calificación no válida. Por favor, seleccione una de la lista.");
+                }
+            } while (rating == null);
+            System.out.println();
+            System.out.println("Resumen de la reseña:");
+            System.out.println("Comentarios: " + text);
+            System.out.println("Calificación: " + rating);
+            System.out.println();
+            System.out.println("Sus datos son los correctos? (S/n)");
+        } while (in.nextLine().equals("n"));
+
 
         Review review = new Review(rating, text, creationDate, acc, film);
         if (reviewDAO.loadReview(review)) {
