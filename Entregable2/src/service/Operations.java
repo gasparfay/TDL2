@@ -246,8 +246,6 @@ public class Operations {
         }
         System.out.println("Presione Enter para volver al menu principal.");
         in.nextLine();
-        System.out.print("\033[H\033[2J");//LIMPIA LA CONSOLA
-        System.out.flush();                 //ACTUALIZA LA CONSOLA
     }
 
     public void showFilms() {
