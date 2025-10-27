@@ -120,7 +120,7 @@ public class Operations {
             password = in.next();
             System.out.println();
             System.out.println("Sus datos son los correctos? (S/n)");
-        } while (in.next().equals("n"));
+        } while (in.nextLine().equals("n"));
 
         Account acc = new Account(email, password);
         
@@ -185,9 +185,9 @@ public class Operations {
             System.out.println("Director: " + director);
             System.out.println("Duración: " + durationMinutes + " minutos");
             System.out.println("Género: " + genre);
-            System.out.println("\n¿Los datos son correctos? (S/N)");
+            System.out.println("\n¿Los datos son correctos? (S/n)");
             
-        } while (in.nextLine().equalsIgnoreCase("N"));
+        } while (in.nextLine().equals("n"));
         
         Film film = new Film(title, director, Duration.ofMinutes((long)durationMinutes), genre);
         

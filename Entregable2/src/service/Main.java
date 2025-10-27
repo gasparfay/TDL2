@@ -50,7 +50,7 @@ public class Main {
                             in.nextLine();
                             break;
                     }
-                
+
                 } else {
                     System.out.println("Entrada no válida. Presione enter para intentar nuevamente.");
                     in.nextLine(); 
