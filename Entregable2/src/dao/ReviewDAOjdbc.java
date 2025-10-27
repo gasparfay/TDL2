@@ -15,10 +15,15 @@ public class ReviewDAOjdbc implements ReviewDAO {
         this.con = con;
     }
 
+<<<<<<< Updated upstream
     @Override
     public void loadReview(Review rev) {
         try {
             con.setAutoCommit(false);
+=======
+    }
+
+>>>>>>> Stashed changes
 
             String insertSql = "INSERT INTO REVIEW (RATING, TEXT, STATUS, CREATION_DATE, ACCOUNT_ID, FILM_ID) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
