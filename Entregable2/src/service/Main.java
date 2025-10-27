@@ -9,41 +9,55 @@ public class Main {
             Connection con = MyConnection.getConnection(); 
             TableCreator.createTables(con);
             Scanner in = new Scanner(System.in);
-            Operations ops = new Operations();
-            int opcion;
-            do{
+            Operations ops = new Operations(in);
+            int opcion = 0;
+            boolean entradaValida;
+
+            do {
                 mostrarMenuPrincipal();
-                opcion = in.nextInt();
-                in.nextLine(); 
-                switch(opcion){
-                    case 1:
-                        ops.profileRegistration(in);
-                        break;
-                    case 2:
-                        ops.accountRegistration(in);
-                        break;
-                    case 3:
-                        ops.filmRegistration(in);
-                        break;
-                    case 4:
-                        ops.showAccounts(in);
-                        break;
-                    case 5:
-                        ops.showFilms(in);
-                        break;
-                    case 6:
-                        ops.reviewRegistration(in);
-                        break;
-                    case 7:
-                        ops.approveReview(in);
-                        break;
-                    case 8:
-                        System.out.print("Fin del programa");
-                        break;
-                    default:
-                        System.out.println("Opción inválida. Intente nuevamente.");
+            
+                if (in.hasNextInt()) {
+                    opcion = in.nextInt();
+                    in.nextLine(); // limpiar buffer
+                
+                    switch (opcion) {
+                        case 1:
+                            ops.profileRegistration();
+                            break;
+                        case 2:
+                            ops.accountRegistration();
+                            break;
+                        case 3:
+                            ops.filmRegistration();
+                            break;
+                        case 4:
+                            ops.showAccounts();
+                            break;
+                        case 5:
+                            ops.showFilms();
+                            break;
+                        case 6:
+                            ops.reviewRegistration();
+                            break;
+                        case 7:
+                            ops.approveReview();
+                            break;
+                        case 8:
+                            System.out.println("Fin del programa");
+                            break;
+                        default:
+                            System.out.println("Opción inválida. Presione enter para intentar nuevamente.");
+                            in.nextLine();
+                            break;
+                    }
+                
+                } else {
+                    System.out.println("Entrada no válida. Presione enter para intentar nuevamente.");
+                    in.nextLine(); 
+                    in.nextLine();
                 }
-            }while(opcion!=8);
+            
+            } while (opcion != 8);
             in.close();
 		    MyConnection.disconnect();
         } catch (SQLException e) {  
@@ -53,6 +67,9 @@ public class Main {
 
 
     public static void mostrarMenuPrincipal() {
+        System.out.print("\033[H\033[2J");//LIMPIA LA CONSOLA
+        System.out.flush();                 //ACTUALIZA LA CONSOLA
+        System.out.println("Bienvenido a la plataforma de streaming TDL2_G8");
         System.out.println("-".repeat(100));
         System.out.println("- Ingrese la operación que desee realizar -");
         System.out.println("1. Registrar perfil");

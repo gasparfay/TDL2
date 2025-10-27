@@ -1,22 +1,20 @@
 package model;
 
 public enum Genre {
-    ACTION,
-    ADVENTURE,
-    ANIMATION,
-    COMEDY,
-    CRIME,
-    DOCUMENTARY,
+    ACCION,
+    AVENTURA,
+    ANIMACION,
+    COMEDIA,
+    CRIMEN,
     DRAMA,
-    FANTASY,
-    HISTORY,
-    HORROR,
-    MUSIC,
-    MYSTERY,
+    FANTASIA,
+    HISTORIA,
+    TERROR,
+    MUSICA,
+    MISTERIO,
     ROMANCE,
-    THRILLER,
-    WAR,
-    KIDS,
-    SPORT,
-    OTHER
+    GUERRA,
+    INFANTIL,
+    DEPORTE,
+    OTRO
 }

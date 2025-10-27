@@ -2,8 +2,8 @@ package model;
 
 public enum Rating {
     TERRIBLE,
-    BAD,
+    MALA,
     MEDIOCRE,
-    GOOD,
-    EXCELLENT
+    BUENA,
+    EXCELENTE
 }

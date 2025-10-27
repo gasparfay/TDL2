@@ -12,15 +12,17 @@ public class Operations {
     private ProfileDAO profileDAO;
     private FilmDAO filmDAO;
     private ReviewDAO reviewDAO;
+    private Scanner in;
 
-    public Operations() {
+    public Operations(Scanner in) {
         this.accountDAO = new AccountDAOjdbc(MyConnection.getConnection());
         this.profileDAO = new ProfileDAOjdbc(MyConnection.getConnection());
         this.filmDAO = new FilmDAOjdbc(MyConnection.getConnection());
         this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
+        this.in = in;
     }
 
-    public void profileRegistration(Scanner in) {
+    public void profileRegistration() {
         String name;
         boolean validName;
         
@@ -38,10 +40,10 @@ public class Operations {
                     System.out.println();
                 }
             } while (!validName);
-            
+
             System.out.println();
-            System.out.println("Los datos son correctos? (S/N)");
-        } while (in.next().equalsIgnoreCase("N"));
+            System.out.println("Los datos son correctos? (S/n)");
+        } while (in.nextLine().equals("n"));
 
         Profile profile = new Profile(name);
         if (profileDAO.loadProfile(profile)) {
@@ -49,9 +51,11 @@ public class Operations {
         } else {
             System.out.println("Error al registrar el perfil.");
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
     
-    public void accountRegistration(Scanner in) {
+    public void accountRegistration() {
         System.out.println("\nRegistro de usuario");
         System.out.println();
 
@@ -60,6 +64,8 @@ public class Operations {
         if (profiles.isEmpty()) {
             System.out.println("No hay perfiles registrados en el sistema.");
             System.out.println("Por favor, registre un perfil primero.");
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
 
@@ -113,8 +119,8 @@ public class Operations {
             System.out.print("Ingrese su contraseña: ");
             password = in.next();
             System.out.println();
-            System.out.println("Sus datos son los correctos? (S/N)");
-        } while (in.next().equalsIgnoreCase("N"));
+            System.out.println("Sus datos son los correctos? (S/n)");
+        } while (in.next().equals("n"));
 
         Account acc = new Account(email, password);
         
@@ -125,26 +131,26 @@ public class Operations {
         } else {
             System.out.println("Error al registrar la cuenta.");
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
 
-    public void filmRegistration(Scanner in) {
+    public void filmRegistration() {
         System.out.println("\nRegistro de película");
-        System.out.println();
         
         String title, director;
         double durationMinutes;
         Genre genre;
         
         do {
-            System.out.print("Ingrese el título de la película: \n");
+            System.out.print("\nIngrese el título de la película: ");
             title = in.nextLine();
             
-            System.out.print("Ingrese el director: \n");
+            System.out.print("Ingrese el director: ");
             director = in.nextLine();
             
             do {
                 System.out.print("Ingrese la duración en minutos: ");
-                System.out.println();
                 while (!in.hasNextDouble()) {
                     System.out.println("\nPor favor, ingrese un número válido.\n");
                     in.next();
@@ -190,15 +196,21 @@ public class Operations {
         } else {
             System.out.println("Error al registrar la película.");
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
     
-    public void showAccounts(Scanner in){
+    public void showAccounts(){
         List<Account> accounts = accountDAO.findAll();
         if (accounts==null) {
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
         if (accounts.isEmpty()) {
             System.out.println("\nNo hay cuentas registradas en el sistema.");
+            System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
             return;
         }
 
@@ -222,7 +234,7 @@ public class Operations {
         if (option == 1) {
             accounts.sort(new AccountComparatorEmail());
         } else {
-            // Ordenar por ID
+            // Ordenar por ID (Ya vienen asi de la BD)
         }
 
         System.out.println("\nCuentas registradas:");
@@ -232,15 +244,23 @@ public class Operations {
         for (Account acc : accounts) {
             System.out.printf(format, acc.getAccId(), acc.getEmail());
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
+        System.out.print("\033[H\033[2J");//LIMPIA LA CONSOLA
+        System.out.flush();                 //ACTUALIZA LA CONSOLA
     }
 
-    public void showFilms(Scanner in) {
+    public void showFilms() {
         List<Film> films = filmDAO.findAll();
         if (films == null) {
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
         if (films.isEmpty()) {
             System.out.println("\nNo hay películas registradas en el sistema.");
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
 
@@ -290,17 +310,18 @@ public class Operations {
                 film.getDuration().toMinutes() + " mins",
                 film.getGenre());
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
 
-    public void reviewRegistration(Scanner in) {
+    public void reviewRegistration() {
         System.out.println("\nRegistro de reseña");
-        System.out.println();
         
         //Pedir email y contraseña para identificar la cuenta
         String email, password; 
         Account acc;
         do{
-            System.out.print("Ingrese su email (0 para volver atras): ");
+            System.out.print("\nIngrese su email (0 para volver atras): ");
             email = in.nextLine();
             if(email.equals("0")){
                 return;
@@ -319,6 +340,8 @@ public class Operations {
         List<Film> films = filmDAO.findAll();
         if (films.isEmpty()) {
             System.out.println("\nNo hay películas registradas en el sistema.");
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }                   
         System.out.println("Películas disponibles:");
@@ -367,15 +390,21 @@ public class Operations {
         } else {
             System.out.println("Error al registrar la reseña.");
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
 
-    public void approveReview(Scanner in) {
+    public void approveReview() {
         List<Review> pendingReviews = reviewDAO.findPending();
         if (pendingReviews == null) {
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
         if (pendingReviews.isEmpty()) {
             System.out.println("\nNo hay reseñas pendientes de aprobación.");
+            System.out.println("Presione Enter para volver al menu principal.");
+            in.nextLine();
             return;
         }
 
@@ -403,16 +432,22 @@ public class Operations {
 
         Review selectedReview = pendingReviews.get(reviewChoice - 1);
 
-        System.out.print("¿Desea aprobar (A) o rechazar (R) la reseña? ");
-        String decision = in.nextLine().toUpperCase();
+        String decision;
+
+        do {
+            System.out.print("¿Desea aprobar (A) o rechazar (R) la reseña? ");
+            decision = in.nextLine().trim().toUpperCase();
+
+            if (!decision.equals("A") && !decision.equals("R")) {
+                System.out.println("Decisión no válida. Intente nuevamente.\n");
+            }
+
+        } while (!decision.equals("A") && !decision.equals("R"));
 
         if (decision.equals("A")) {
             selectedReview.setStatus(ReviewStatus.APPROVED);
-        } else if (decision.equals("R")) {
-            selectedReview.setStatus(ReviewStatus.REJECTED);
         } else {
-            System.out.println("Decisión no válida. Operación cancelada.");
-            return;
+            selectedReview.setStatus(ReviewStatus.REJECTED);
         }
 
         if (reviewDAO.modifyStatus(selectedReview)) {
@@ -420,6 +455,9 @@ public class Operations {
         } else {
             System.out.println("Error al actualizar la reseña.");
         }
+        System.out.println("Presione Enter para volver al menu principal.");
+        in.nextLine();
     }
+
 
 }
