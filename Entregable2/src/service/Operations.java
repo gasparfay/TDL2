@@ -121,6 +121,7 @@ public class Operations {
             System.out.println();
             System.out.println("Sus datos son los correctos? (S/n)");
         } while (in.next().equals("n"));
+        in.nextLine();
 
         Account acc = new Account(email, password);
         
