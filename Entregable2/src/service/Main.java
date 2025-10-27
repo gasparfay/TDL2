@@ -11,7 +11,6 @@ public class Main {
             Scanner in = new Scanner(System.in);
             Operations ops = new Operations(in);
             int opcion = 0;
-            boolean entradaValida;
 
             do {
                 mostrarMenuPrincipal();
