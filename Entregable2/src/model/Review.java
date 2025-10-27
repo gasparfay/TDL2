@@ -53,4 +53,28 @@ public class Review {
         this.status = status;
     }
 
+    public int getRevId() {
+        return revId;
+    }
+
+    public void setRevId(int revId) {
+        this.revId = revId;
+    }
+
+    public Film getFilm() {
+        return film;
+    }
+
+    public void setFilm(Film film) {
+        this.film = film;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
 }
