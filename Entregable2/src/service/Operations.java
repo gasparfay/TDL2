@@ -144,6 +144,7 @@ public class Operations {
             
             do {
                 System.out.print("Ingrese la duración en minutos: ");
+                System.out.println();
                 while (!in.hasNextDouble()) {
                     System.out.println("\nPor favor, ingrese un número válido.\n");
                     in.next();
@@ -239,6 +240,7 @@ public class Operations {
         System.out.print("Ingrese su opción (1-4): ");
         
         int option = in.nextInt();
+        in.nextLine();
         
         switch (option) {
             case 1:
@@ -251,7 +253,7 @@ public class Operations {
                 films.sort(new FilmComparatorGenre());
                 break;
             default:
-                // No ordenar
+                //POR ID
                 break;
         }
 
