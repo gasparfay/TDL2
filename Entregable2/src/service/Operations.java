@@ -25,7 +25,7 @@ public class Operations {
         boolean validName;
         
         do {
-            System.out.println("Registro de perfil");
+            System.out.println("\nRegistro de perfil");
             System.out.println();
             do {
                 System.out.print("Ingrese el nombre del perfil (solo letras): ");
@@ -52,7 +52,7 @@ public class Operations {
     }
     
     public void accountRegistration(Scanner in) {
-        System.out.println("Registro de usuario");
+        System.out.println("\nRegistro de usuario");
         System.out.println();
 
         // Mostrar perfiles disponibles
@@ -128,7 +128,7 @@ public class Operations {
     }
 
     public void filmRegistration(Scanner in) {
-        System.out.println("Registro de película");
+        System.out.println("\nRegistro de película");
         System.out.println();
         
         String title, director;
@@ -198,25 +198,37 @@ public class Operations {
             return;
         }
         if (accounts.isEmpty()) {
-            System.out.println("No hay cuentas registradas en el sistema.");
+            System.out.println("\nNo hay cuentas registradas en el sistema.");
             return;
         }
 
-        System.out.println("\nSeleccione el criterio de ordenamiento:");
-        System.out.println("1. Ordenar por email");
-        System.out.println("2. Ordenar por ID");
-        System.out.print("Ingrese su opción (1-2): ");
-        
-        int option = in.nextInt();
-        
+        int option;
+
+        do {
+            System.out.println("\nSeleccione el criterio de ordenamiento:");
+            System.out.println("1. Ordenar por email");
+            System.out.println("2. Ordenar por ID");
+            System.out.print("Ingrese su opción (1-2): ");
+
+            option = in.nextInt();
+            in.nextLine();
+
+            if (option < 1 || option > 2) {
+                System.out.println("\nOpción inválida. Intente nuevamente.\n");
+            }
+
+        } while (option < 1 || option > 2);
+
         if (option == 1) {
             accounts.sort(new AccountComparatorEmail());
+        } else {
+            // Ordenar por ID
         }
 
         System.out.println("\nCuentas registradas:");
-        String format = "%-5s   %-40s%n";
+        String format = "%-5s   %-95s%n";
         System.out.printf(format, "ID", "Email");
-        System.out.println("-".repeat(48));
+        System.out.println("-".repeat(100));
         for (Account acc : accounts) {
             System.out.printf(format, acc.getAccId(), acc.getEmail());
         }
@@ -228,34 +240,43 @@ public class Operations {
             return;
         }
         if (films.isEmpty()) {
-            System.out.println("No hay películas registradas en el sistema.");
+            System.out.println("\nNo hay películas registradas en el sistema.");
             return;
         }
 
+    int option;
+
+    do {
         System.out.println("\nSeleccione el criterio de ordenamiento:");
         System.out.println("1. Ordenar por título");
         System.out.println("2. Ordenar por duración");
         System.out.println("3. Ordenar por género");
         System.out.println("4. Ordenar por ID");
         System.out.print("Ingrese su opción (1-4): ");
-        
-        int option = in.nextInt();
+
+        option = in.nextInt();
         in.nextLine();
-        
-        switch (option) {
-            case 1:
-                films.sort(new FilmComparatorTitle());
-                break;
-            case 2:
-                films.sort(new FilmComparatorDuration());
-                break;
-            case 3:
-                films.sort(new FilmComparatorGenre());
-                break;
-            default:
-                //POR ID
-                break;
+
+        if (option < 1 || option > 4) {
+            System.out.println("\nOpción inválida. Intente nuevamente.\n");
         }
+
+    } while (option < 1 || option > 4);
+
+    switch (option) {
+        case 1:
+            films.sort(new FilmComparatorTitle());
+            break;
+        case 2:
+            films.sort(new FilmComparatorDuration());
+            break;
+        case 3:
+            films.sort(new FilmComparatorGenre());
+            break;
+        case 4:
+            // Ordenar por ID
+            break;
+    }
 
         System.out.println("\nPelículas registradas:");
         String format = "%-5s   %-30s   %-30s   %-15s   %-15s%n";
@@ -272,7 +293,7 @@ public class Operations {
     }
 
     public void reviewRegistration(Scanner in) {
-        System.out.println("Registro de reseña");
+        System.out.println("\nRegistro de reseña");
         System.out.println();
         
         //Pedir email y contraseña para identificar la cuenta
@@ -297,7 +318,7 @@ public class Operations {
         //Listar peliculas disponibles y pedir que se elija una
         List<Film> films = filmDAO.findAll();
         if (films.isEmpty()) {
-            System.out.println("No hay películas registradas en el sistema.");
+            System.out.println("\nNo hay películas registradas en el sistema.");
             return;
         }                   
         System.out.println("Películas disponibles:");
@@ -354,7 +375,7 @@ public class Operations {
             return;
         }
         if (pendingReviews.isEmpty()) {
-            System.out.println("No hay reseñas pendientes de aprobación.");
+            System.out.println("\nNo hay reseñas pendientes de aprobación.");
             return;
         }
 

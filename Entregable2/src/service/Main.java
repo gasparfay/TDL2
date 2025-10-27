@@ -53,7 +53,7 @@ public class Main {
 
 
     public static void mostrarMenuPrincipal() {
-        System.out.println("\n--------------------------------------------");
+        System.out.println("-".repeat(100));
         System.out.println("- Ingrese la operación que desee realizar -");
         System.out.println("1. Registrar perfil");
         System.out.println("2. Registrar nueva cuenta");
