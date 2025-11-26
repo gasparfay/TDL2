@@ -39,17 +39,15 @@ public class LoginGUI extends JFrame {
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(Color.WHITE);
 
-        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/media/perrito.png"));
-        Image imgEscalada = iconoOriginal.getImage().getScaledInstance(550, 450, Image.SCALE_SMOOTH);
-        ImageIcon iconoEscalado = new ImageIcon(imgEscalada);
+        ImageIcon img = new ImageIcon(getClass().getResource("/media/perrito.png"));
 
-        JLabel lblImagen = new JLabel(iconoEscalado);
+        JLabel lblImagen = new JLabel(img);
         lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
         imagePanel.add(lblImagen, BorderLayout.CENTER);
 
         centerPanel.add(imagePanel);
 
-        // ===================== DERECHA: FORMULARIO =====================
+        // Panel derecho
         JPanel formContainer = new JPanel(new GridBagLayout());
         formContainer.setBackground(Color.WHITE);
         centerPanel.add(formContainer);
@@ -62,7 +60,7 @@ public class LoginGUI extends JFrame {
         c.insets = new Insets(10, 10, 10, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
             
-        // --------- FILA EMAIL ---------
+        // Formulario de email
         JLabel emailLabel = new JLabel("E-mail:");
         emailLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
         c.gridx = 0;
@@ -77,8 +75,8 @@ public class LoginGUI extends JFrame {
         c.weightx = 1.0;
         formPanel.add(emailField, c);
             
-        // --------- FILA PASSWORD ---------
-        JLabel passwordLabel = new JLabel("Password:");
+        // Formulario de contraseña
+        JLabel passwordLabel = new JLabel("Contraseña:");
         passwordLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
         c.gridx = 0;
         c.gridy = 1;
@@ -92,7 +90,7 @@ public class LoginGUI extends JFrame {
         c.weightx = 1.0;
         formPanel.add(passwordField, c);
             
-        // --------- BOTÓN LOGIN ---------
+        // Boton ingresar
         loginButton = new JButton("Ingresar");
         loginButton.setFont(new Font("SansSerif", Font.BOLD, 17));
         loginButton.setBackground(new Color(0, 140, 255));
@@ -105,22 +103,21 @@ public class LoginGUI extends JFrame {
         c.weightx = 1;
         formPanel.add(loginButton, c);
             
-        // --------- TEXTO DE REGISTRO ---------
+        // Texto "¿Aún no sos usuario?"
         JLabel noUserLabel = new JLabel("¿Aún no sos usuario?");
         noUserLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        noUserLabel.setHorizontalAlignment(SwingConstants.CENTER); // <-- CENTRAR TEXTO
+        noUserLabel.setHorizontalAlignment(SwingConstants.CENTER); 
 
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 2;          // ocupa toda la fila
+        c.gridwidth = 2;          
         c.anchor = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.HORIZONTAL; // <-- permite que se expanda y se vea centrado
+        c.fill = GridBagConstraints.HORIZONTAL; // 
         formPanel.add(noUserLabel, c);
 
-        // restaurar gridwidth para los siguientes elementos
         c.gridwidth = 1;
             
-        // --------- BOTÓN REGISTRARSE ---------
+        // Boton registrarse
         registerButton = new JButton("Registrate");
         registerButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         registerButton.setBackground(new Color(0, 140, 255));
@@ -138,7 +135,7 @@ public class LoginGUI extends JFrame {
         gbc.gridy = 0;
         formContainer.add(formPanel, gbc);
 
-        // ===================== LISTENERS =====================
+        // Listeners
         loginButton.addActionListener(e -> {
             String email = getEmail();
             String password = new String(getPassword());
@@ -147,9 +144,9 @@ public class LoginGUI extends JFrame {
                 this.controller.handleLogin(this, email, password);
                 mostrarMensaje("¡Inicio de sesión exitoso!");
                 dispose();
-                // controller.abrirVentanaActivos();
+                // controller.abrirVentanaPrincipal();
             } catch (LoginException e1) {
-                mostrarError("Error: " + e1.getMessage());
+                showError("Error: " + e1.getMessage());
             }
         });
 
@@ -175,7 +172,7 @@ public class LoginGUI extends JFrame {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
-    public void mostrarError(String mensaje) {
+    public void showError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
