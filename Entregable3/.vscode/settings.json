@@ -4,7 +4,7 @@
   ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
-    "${workspaceFolder}/lib/*.jar"
+    "${workspaceFolder}/lib/*.jar",
   ],
   "java.format.settings.url": ""
 }

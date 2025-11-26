@@ -18,12 +18,17 @@ public class FilmDAOjdbc implements FilmDAO {
         try {
             con.setAutoCommit(false);
             
-            String insertSql = "INSERT INTO FILM (TITLE, DIRECTOR, DURATION, GENRE) VALUES (?, ?, ?, ?)";
+            String insertSql = "INSERT INTO FILM (TITLE, DIRECTOR, SYNOPSIS, DURATION, GENRE, RATING_PROMEDIO, ANIO, POSTER) " +  // NUEVO
+                               "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";                                                                  // NUEVO
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                 ps.setString(1, film.getTitle());
                 ps.setString(2, film.getDirector());
-                ps.setDouble(3, film.getDuration().toMinutes());
-                ps.setInt(4, film.getGenre().ordinal());
+                ps.setString(3, film.getSynopsis());                        // NUEVO
+                ps.setDouble(4, film.getDuration().toMinutes());
+                ps.setInt(5, film.getGenre().ordinal());
+                ps.setFloat(6, film.getAverageRating());                    // NUEVO
+                ps.setInt(7, film.getReleaseYear());                        // NUEVO
+                ps.setString(8, film.getPosterUrl());                       // NUEVO
                 ps.executeUpdate();
             }
             
@@ -54,16 +59,28 @@ public class FilmDAOjdbc implements FilmDAO {
         
         try (Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
+
             while (rs.next()) {
                 double minutes = rs.getDouble("DURATION");
                 int genreOrd = rs.getInt("GENRE");
-                Film film = new Film(rs.getString("TITLE"),
-                                     rs.getString("DIRECTOR"),
-                                     Duration.ofMinutes((long) minutes),
-                                     Genre.values()[genreOrd]);
+
+                // SE USA EL CONSTRUCTOR COMPLETO
+                Film film = new Film(
+                    rs.getString("TITLE"),
+                    rs.getString("DIRECTOR"),
+                    Duration.ofMinutes((long) minutes),
+                    Genre.values()[genreOrd],
+                    rs.getInt("ANIO"),               // NUEVO
+                    rs.getString("POSTER"),          // NUEVO
+                    rs.getFloat("RATING_PROMEDIO")   // NUEVO
+                );
+
                 film.setFilmId(rs.getInt("ID"));
+                film.setSynopsis(rs.getString("SYNOPSIS")); // NUEVO
+
                 films.add(film);
             }
+
         } catch (SQLException e) {
             System.out.println("Error al obtener las películas: " + e.getMessage());
         }
@@ -76,20 +93,29 @@ public class FilmDAOjdbc implements FilmDAO {
         
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     double minutes = rs.getDouble("DURATION");
                     int genreOrd = rs.getInt("GENRE");
+
                     Film film = new Film(
                         rs.getString("TITLE"),
                         rs.getString("DIRECTOR"),
                         Duration.ofMinutes((long) minutes),
-                        Genre.values()[genreOrd]
+                        Genre.values()[genreOrd],
+                        rs.getInt("ANIO"),               // NUEVO
+                        rs.getString("POSTER"),          // NUEVO
+                        rs.getFloat("RATING_PROMEDIO")   // NUEVO
                     );
+
                     film.setFilmId(rs.getInt("ID"));
+                    film.setSynopsis(rs.getString("SYNOPSIS")); // NUEVO
+
                     return film;
                 }
             }
+
         } catch (SQLException e) {
             System.out.println("Error al buscar la película: " + e.getMessage());
         }
