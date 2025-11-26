@@ -13,7 +13,10 @@ public class TableCreator {
                      "TITLE TEXT(100) NOT NULL,"+
                      "SyNOPSIS TEXT(500) DEFAULT '-',"+
                      "DIRECTOR TEXT(100) NOT NULL,"+
-                     "DURATION INTEGER NOT NULL"+
+                     "DURATION INTEGER NOT NULL, " +
+                     "RATING FLOAT DEFAULT 0, " +
+                     "YEAR INTEGER DEFAULT 0, " +
+                     "POSTER TEXT " +
                      ");";
         stmt.executeUpdate(sql);
 
