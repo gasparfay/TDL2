@@ -1,7 +1,6 @@
 package service;
 
 import dao.*;
-import java.util.Scanner;
 import model.*;
 
 public class Operations {
@@ -9,14 +8,12 @@ public class Operations {
     private ProfileDAO profileDAO;
     private FilmDAO filmDAO;
     private ReviewDAO reviewDAO;
-    private Scanner in;
 
-    public Operations(Scanner in) {
+    public Operations() {
         this.accountDAO = new AccountDAOjdbc(MyConnection.getConnection());
         this.profileDAO = new ProfileDAOjdbc(MyConnection.getConnection());
         this.filmDAO = new FilmDAOjdbc(MyConnection.getConnection());
         this.reviewDAO = new ReviewDAOjdbc(MyConnection.getConnection());
-        this.in = in;
     }
 
     public boolean existsAccount(String email) {

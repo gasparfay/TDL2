@@ -10,7 +10,7 @@ public class RegisterGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private Controllers controller;
-    private JTextField nombresField;
+    private JTextField nombreField;
     private JTextField emailField;
     private JPasswordField passwordField;
     private JButton registerButton;
@@ -45,20 +45,20 @@ public class RegisterGUI extends JFrame {
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        // Formulario nombres
-        JLabel lblNombres = new JLabel("Nombres:");
+        // Formulario nombre
+        JLabel lblNombres = new JLabel("Nombre:");
         lblNombres.setFont(new Font("SansSerif", Font.PLAIN, 16));
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.2;
         formContainer.add(lblNombres, c);
 
-        nombresField = new JTextField(20);
-        nombresField.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        nombreField = new JTextField(20);
+        nombreField.setFont(new Font("SansSerif", Font.PLAIN, 15));
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0.8;
-        formContainer.add(nombresField, c);
+        formContainer.add(nombreField, c);
 
         // Formulario email
         JLabel lblEmail = new JLabel("E-mail:");
@@ -76,7 +76,7 @@ public class RegisterGUI extends JFrame {
         formContainer.add(emailField, c);
 
         // Formulario password
-        JLabel lblPassword = new JLabel("Password:");
+        JLabel lblPassword = new JLabel("Contraseña:");
         lblPassword.setFont(new Font("SansSerif", Font.PLAIN, 16));
         c.gridx = 0;
         c.gridy = 4;
@@ -105,12 +105,12 @@ public class RegisterGUI extends JFrame {
         bottomPanel.add(registerButton);
 
         registerButton.addActionListener(e ->{
-               String nombres = getNombres();
+               String nombre = getNombre();
                String email = getEmail();
                String password = new String(getPassword());
                
                try {
-               	   controller.handleRegister(this,nombres,email,password);
+               	   controller.handleRegister(this,nombre,email,password);
                    mostrarMensaje("Usuario registrado con éxito!");
                    dispose();
                	   controller.showLogin();
@@ -122,7 +122,7 @@ public class RegisterGUI extends JFrame {
     }
 
     
-    public String getNombres() { return nombresField.getText().trim(); }
+    public String getNombre() { return nombreField.getText().trim(); }
     public String getEmail() { return emailField.getText().trim(); }
     public char[] getPassword() { return passwordField.getPassword(); }
     public JButton getRegistrarButton() { return registerButton; }

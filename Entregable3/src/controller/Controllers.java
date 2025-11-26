@@ -91,6 +91,7 @@ public class Controllers {
 	}
 
 	public void attachCloseEvent(JFrame ventana) {
+		//Este metdodo cierra la conexin a la base de datos al cerrar la ventana que esta activa
     	ventana.addWindowListener(new java.awt.event.WindowAdapter() {
        		 @Override
        		 public void windowClosing(java.awt.event.WindowEvent e) {
