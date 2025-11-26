@@ -1,8 +1,7 @@
 package service;
+import controller.Controllers;
 import java.sql.*;
 import java.util.Scanner;
-import view.LoginGUI;
-import controller.Controllers;
 
 
 public class Main {
@@ -14,12 +13,9 @@ public class Main {
             Operations ops = new Operations(in);
 
             Controllers controller = new Controllers(ops);
-			LoginGUI loginView = new LoginGUI(controller);
 			
-			//controller.crearMonedasPrueba();
-			controller.showLogin(loginView);
+			controller.showLogin();
             in.close();
-		    MyConnection.disconnect();
          } catch (SQLException e) {  
             System.out.print("Error en la operación con la BD: " + e.getMessage());
         }

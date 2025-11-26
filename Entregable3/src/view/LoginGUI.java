@@ -40,7 +40,6 @@ public class LoginGUI extends JFrame {
         imagePanel.setBackground(Color.WHITE);
 
         ImageIcon img = new ImageIcon(getClass().getResource("/media/perrito.png"));
-
         JLabel lblImagen = new JLabel(img);
         lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
         imagePanel.add(lblImagen, BorderLayout.CENTER);
@@ -144,7 +143,7 @@ public class LoginGUI extends JFrame {
                 this.controller.handleLogin(this, email, password);
                 mostrarMensaje("¡Inicio de sesión exitoso!");
                 dispose();
-                // controller.abrirVentanaPrincipal();
+                controller.succesLogin();
             } catch (LoginException e1) {
                 showError("Error: " + e1.getMessage());
             }
@@ -154,7 +153,7 @@ public class LoginGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // controller.openRegisterWindow();
+                controller.showRegister();
             }
         });
     }
