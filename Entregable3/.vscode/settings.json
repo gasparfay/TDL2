@@ -1,6 +1,9 @@
 {
   "java.project.sourcePaths": ["src"],
   "java.project.outputPath": "bin",
-  "java.project.referencedLibraries": ["${workspaceFolder}/lib/*.jar"],
+  "java.project.referencedLibraries": [
+    "${workspaceFolder}/lib/*.jar",
+    "lib/json-20250517.jar"
+  ],
   "java.format.settings.url": ""
 }

@@ -1,7 +1,7 @@
 package exceptions;
 
 public class LoginException extends Exception {
-	public LoginException(String msj) {
-		super(msj);
+	public LoginException(String msg) {
+		super(msg);
 	}
 }
