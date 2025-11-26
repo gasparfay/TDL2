@@ -67,19 +67,27 @@ public class Controllers {
 		registerGUI.setVisible(true);
 	}
 	public void handleRegister(RegisterGUI registerGUI, String nombres, String email, String password) throws RegisterException {
-		if (nombres.isEmpty() || email.isEmpty() || password.isEmpty()) {
-			throw new RegisterException("Por favor, complete todos los campos.");
-		}
-		else {
-			if (ops.existsAccount(email)) {
-				throw new RegisterException("El email ya está registrado.");
-			} else {
-				Account newAccount = new Account(email, password);
-				Profile newProfile = new Profile(nombres);
-				newProfile.setAccount(newAccount);
-				ops.addAccount(newAccount);
-			}
-		}
+		 if (nombres.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        throw new RegisterException("Por favor, complete todos los campos.");
+    		}
+    		if (!nombres.matches("[A-Za-zÁÉÍÓÚáéíóúÑñ ]+")) {
+    		    throw new RegisterException("El nombre solo puede contener letras y espacios.");
+    		}
+    		if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    		    throw new RegisterException("El formato de email no es válido.");
+    		}
+    		if (password.length() < 6) {
+    		    throw new RegisterException("La contraseña debe tener al menos 6 caracteres.");
+    		}
+    		if (ops.existsAccount(email)) {
+    		    throw new RegisterException("El email ya está registrado.");
+    		}
+
+    		Account newAccount = new Account(email, password);
+    		Profile newProfile = new Profile(nombres);
+    		newProfile.setAccount(newAccount);
+		
+    		ops.addAccount(newAccount);
 	}
 
 	public Account getActiveAccount() {
