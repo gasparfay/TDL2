@@ -3,7 +3,7 @@
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
     "${workspaceFolder}/lib/*.jar",
-    "lib/json-20250517.jar"
+    "lib/json-20240303.jar"
   ],
   "java.format.settings.url": ""
 }
