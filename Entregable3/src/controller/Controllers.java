@@ -1,7 +1,8 @@
 package controller;
 
 import exceptions.*;
-import javax.swing.JFrame;
+import java.util.List;
+import javax.swing.*;
 import model.*;
 import service.MyConnection;
 import service.Operations;
@@ -11,6 +12,8 @@ import view.*;
 public class Controllers {
 	private Operations ops;
 	private Account activeAccount;
+	private List<Profile> activeProfiles;
+	private int activeProfile;
 	
 	public Controllers(Operations ops) {
 		this.ops=ops;
@@ -42,23 +45,9 @@ public class Controllers {
     }
 
 	public void succesLogin() {
-		LoadingGUI loading = new LoadingGUI();
-		this.attachCloseEvent(loading);
-    	loading.setVisible(true);
-
-    	//List<Film> filmsToShow;
-//
-    	//if (ops.isFirstAccess(activeAccount)) {
-    	//    ops.loadFIlms();
-    	//    filmsToShow = ops.getInitial10Films();
-    	//    ops.markFirstAccessDone(activeAccount);
-//
-    	//} else {
-    	//    filmsToShow = ops.get10RandomFilms(activeAccount);
-//		
-		WelcomeGUI welcome = new WelcomeGUI();
- 		//WelcomeGUI welcome = new WelcomeGUI(this, activeAccount, filmsToShow);
-    	//welcome.setVisible(true);
+		ProfileSelectionGUI profilesGUI = new ProfileSelectionGUI(this);
+		this.attachCloseEvent(profilesGUI);
+    	profilesGUI.setVisible(true);
 	}
 
 	public void showRegister() {
@@ -66,32 +55,53 @@ public class Controllers {
 		this.attachCloseEvent(registerGUI);
 		registerGUI.setVisible(true);
 	}
-	public void handleRegister(RegisterGUI registerGUI, String nombres, String email, String password) throws RegisterException {
-		 if (nombres.isEmpty() || email.isEmpty() || password.isEmpty()) {
-        throw new RegisterException("Por favor, complete todos los campos.");
-    		}
-    		if (!nombres.matches("[A-Za-zÁÉÍÓÚáéíóúÑñ ]+")) {
-    		    throw new RegisterException("El nombre solo puede contener letras y espacios.");
-    		}
-    		if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-    		    throw new RegisterException("El formato de email no es válido.");
-    		}
-    		if (password.length() < 6) {
-    		    throw new RegisterException("La contraseña debe tener al menos 6 caracteres.");
-    		}
-    		if (ops.existsAccount(email)) {
-    		    throw new RegisterException("El email ya está registrado.");
-    		}
+	
+	public void handleRegister(RegisterGUI registerGUI, String email, String password) throws RegisterException {
+		if (email.isEmpty() || password.isEmpty()) {
+        	throw new RegisterException("Por favor, complete todos los campos.");
+    	}	
+    	if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    	    throw new RegisterException("El formato de email no es válido.");
+    	}
+    	if (password.length() < 6) {
+    	    throw new RegisterException("La contraseña debe tener al menos 6 caracteres.");
+    	}
+    	if (ops.existsAccount(email)) {
+    	    throw new RegisterException("El email ya está registrado.");
+    	}
+    	Account newAccount = new Account(email, password);
+    	ops.addAccount(newAccount);
+	}
 
-    		Account newAccount = new Account(email, password);
-    		Profile newProfile = new Profile(nombres);
-    		newProfile.setAccount(newAccount);
-		
-    		ops.addAccount(newAccount);
+	public void showCreateProfile(ProfileSelectionGUI parent) {
+		CreateProfileGUI dialog = new CreateProfileGUI(parent, this);
+    	dialog.setVisible(true);
+    	parent.reloadProfiles();
+	}
+
+	public void handleCreateProfile(String nombre) throws ProfileException {
+		if(nombre.isEmpty()){
+			throw new ProfileException("El nombre no puede estar vacio");
+		}
+		Profile newProfile = new Profile(nombre);
+		newProfile.setAccount(activeAccount);
+		ops.addProfile(newProfile);
+	}
+
+	public void enterWithProfile(String name){
+		activeProfile = activeProfiles.indexOf(name);
+		WelcomeGUI welcomeGUI = new WelcomeGUI();
+		this.attachCloseEvent(welcomeGUI);
+		welcomeGUI.setVisible(true);
 	}
 
 	public Account getActiveAccount() {
 		return this.activeAccount;
+	}
+	
+	public List<Profile> getProfiles(){
+		activeProfiles = ops.getProfiles(activeAccount);
+		return activeProfiles;
 	}
 	
 	public void setActiveAccount(Account activeAccount) {

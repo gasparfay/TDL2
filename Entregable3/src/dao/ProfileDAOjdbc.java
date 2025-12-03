@@ -103,4 +103,33 @@ public class ProfileDAOjdbc implements ProfileDAO {
             return false;
         }
     }
+
+    @Override
+    public List<Profile> findByAccount(Account account){
+        List<Profile> profiles = new ArrayList<>();
+        if (account == null || account.getAccId() == 0) {
+            return profiles; 
+        }
+        String sql = "SELECT ID, NAME FROM PROFILE WHERE ACCOUNT_ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, account.getAccId());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Profile profile = new Profile(rs.getString("NAME"));
+                    profile.setProfileId(rs.getInt("ID"));
+                    profile.setAccount(account);
+                    profiles.add(profile);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener perfiles de la cuenta: " + e.getMessage());
+        }
+        return profiles;
+    }
+
+
+
 }
