@@ -1,6 +1,7 @@
 package service;
 
 import dao.*;
+import java.util.*;
 import model.*;
 
 public class Operations {
@@ -27,5 +28,14 @@ public class Operations {
     public void addAccount(Account acc) {
         accountDAO.loadAccount(acc);
     }
+
+    public void addProfile(Profile prof) {
+        profileDAO.loadProfile(prof);
+    }
+
+    public List<Profile> getProfiles(Account acc){
+        return profileDAO.findByAccount(acc);
+    }
+
    
 }
