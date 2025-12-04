@@ -1,11 +1,14 @@
 package view;
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
+import model.*;
+import controller.*;
 
 public class WelcomeGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    public WelcomeGUI() {
+    public WelcomeGUI(Controllers controllers, java.util.List<Film> filmsToDisplay) {
 
         setTitle("Plataforma de Streaming - Bienvenida");
         setSize(900, 700);

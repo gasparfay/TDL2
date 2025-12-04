@@ -16,5 +16,7 @@ public enum Genre {
     GUERRA,
     INFANTIL,
     DEPORTE,
+    DOCUMENTAL,
+    CIENCIA_FICCION,
     OTRO
 }
