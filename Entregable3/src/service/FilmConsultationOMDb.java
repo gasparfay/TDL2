@@ -25,28 +25,23 @@ public class FilmConsultationOMDb {
 
             String url = BASE_URL + titulo.replace(" ", "+");
             
-            // 3. Conexión: Crear el cliente y la solicitud HTTP
+            // Realiza la conexión con la API, crea los objetos para poder comunicarse
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
-            
-            // 4. Envío: Ejecutar la solicitud y obtener la respuesta como String
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            // 5. Procesamiento: Convertir la respuesta de texto a objeto JSON
             JSONObject json = new JSONObject(response.body());
 
-            // 6. Verificación: Chequear si la API respondió con un error lógico
             if (json.has("Response") && "False".equalsIgnoreCase(json.getString("Response"))) {
                 throw new APIException("Película no encontrada: " + titulo);
             }
 
-            // 7. Extracción Básica: Obtener Strings usando optString para evitar nulos
+            // Extrae los datos necesarios del JSON para la clase Film
             String title = json.optString("Title", "Desconocido");
             String director = json.optString("Director", "Desconocido");
             String plot = json.optString("Plot", "Sin sinopsis");
             String poster = json.optString("Poster", "");
 
-            // 8. Parsing Numérico: Limpiar y convertir Año y Rating
+            // Conversión de los datos año y rating para que coincidan con los tipos de Film
             String yearStr = json.optString("Year", "0").replaceAll("\\D", "");
             int year = 0;
             try { year = Integer.parseInt(yearStr); } catch (Exception e) {}
@@ -55,13 +50,13 @@ public class FilmConsultationOMDb {
             float rating = 0.0f;
             try { rating = Float.parseFloat(ratingStr); } catch (Exception e) {}
 
-            // 9. Conversión Compleja I: Transformar "140 min" a objeto Duration
+            // Conversión del dato de duración de la API a Duration utilizado en Film
             String runtimeStr = json.optString("Runtime", "0").split(" ")[0];
             long minutes = 0;
             try { minutes = Long.parseLong(runtimeStr); } catch (Exception e) {}
             Duration duration = Duration.ofMinutes(minutes);
 
-            // 10. Conversión Compleja II: Transformar texto a Enum Genre
+            // Conversión del dato de género de la API a Genre utilizado en Film
             String genreText = json.optString("Genre", "DRAMA").split(",")[0].trim();
             Genre genre;
             try {
@@ -72,10 +67,10 @@ public class FilmConsultationOMDb {
                 System.out.println("Aviso: Se asignó género por defecto para: " + genreText);
             }
 
-            // 11. Construcción: Crear el objeto Film con el constructor base
+            // Creamos el objeto Film ya con los datos obtenidos y transformados de la API
             Film film = new Film(title, director, duration, genre);
 
-            // 12. Completado: Asignar los atributos adicionales requeridos por el TP
+            // Asignamos los atributos adicionales requeridos por el TP que no están en el constructor
             film.setSynopsis(plot);
             film.setReleaseYear(year);
             film.setPosterUrl(poster);
