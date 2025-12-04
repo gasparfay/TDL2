@@ -194,6 +194,12 @@ public class Controllers {
 		showLogin();
 	}
 
+	public void showRateMovieGUI(Film film, int index){
+		RateMovieGUI ratingGUI = new RateMovieGUI(this, film, activeProfiles.get(activeProfile),index);
+		this.attachCloseEvent(ratingGUI);
+		ratingGUI.setVisible(true);
+	}
+
 	public Account getActiveAccount() {
 		return this.activeAccount;
 	}

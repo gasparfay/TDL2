@@ -1,8 +1,10 @@
 package view;
 
+import controller.Controllers;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.border.*;
+import model.*;
 
 public class RateMovieGUI extends JFrame {
 
@@ -14,25 +16,23 @@ public class RateMovieGUI extends JFrame {
     private JButton btnSave;
     private JButton btnCancel;
 
-    public RateMovieGUI(String movieTitle) {
+    public RateMovieGUI(Controllers controller,Film film,Profile profile, int index) {
         setTitle("Calificar Película");
-        setSize(500, 400); // Tamaño compacto
+        setSize(500, 400); 
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la app, solo esta ventana
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         setResizable(false);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         setContentPane(mainPanel);
 
-        // =================================================================================
-        // 1. HEADER
-        // =================================================================================
+        //Header
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.WHITE);
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 10, 30));
 
-        JLabel lblTitle = new JLabel("Calificar: " + movieTitle);
+        JLabel lblTitle = new JLabel("Calificar: " + film.getTitle());
         lblTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
         lblTitle.setForeground(new Color(33, 37, 41));
         
@@ -45,15 +45,13 @@ public class RateMovieGUI extends JFrame {
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // =================================================================================
-        // 2. FORMULARIO (Centro)
-        // =================================================================================
+        //Formulario
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.WHITE);
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
 
-        // -- Selector de Puntaje --
+
         JLabel lblRating = new JLabel("Puntuación (1 al 5):");
         lblRating.setFont(new Font("SansSerif", Font.BOLD, 12));
         lblRating.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -65,7 +63,6 @@ public class RateMovieGUI extends JFrame {
         comboRating.setFont(new Font("SansSerif", Font.PLAIN, 13));
         comboRating.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // -- Área de Reseña --
         JLabel lblReview = new JLabel("Tu Reseña:");
         lblReview.setFont(new Font("SansSerif", Font.BOLD, 12));
         lblReview.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -76,12 +73,11 @@ public class RateMovieGUI extends JFrame {
         txtReview.setWrapStyleWord(true);
         txtReview.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Scroll con borde gris fino
         JScrollPane scrollReview = new JScrollPane(txtReview);
         scrollReview.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
         scrollReview.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Agregamos con espaciadores
+
         formPanel.add(lblRating);
         formPanel.add(Box.createVerticalStrut(5));
         formPanel.add(comboRating);
@@ -92,9 +88,7 @@ public class RateMovieGUI extends JFrame {
 
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        // =================================================================================
-        // 3. BOTONES (Sur)
-        // =================================================================================
+        //Botones
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 15));
         bottomPanel.setBackground(new Color(250, 250, 250));
         bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(230, 230, 230)));
@@ -107,8 +101,10 @@ public class RateMovieGUI extends JFrame {
         btnCancel.setPreferredSize(new Dimension(100, 35));
         btnCancel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        btnCancel.addActionListener(e -> dispose());
+
         btnSave = new JButton("Guardar Reseña");
-        btnSave.setBackground(new Color(40, 167, 69)); // Verde para guardar
+        btnSave.setBackground(new Color(0, 144, 255)); 
         btnSave.setForeground(Color.WHITE);
         btnSave.setBorderPainted(false);
         btnSave.setFocusPainted(false);
@@ -116,13 +112,24 @@ public class RateMovieGUI extends JFrame {
         btnSave.setPreferredSize(new Dimension(140, 35));
         btnSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerfomed(ActionEvent e){
+                int selectedIndex = comboRating.getSelectedIndex();
+                String reviewText = txtReview.getText().trim();
+                if (selectedIndex == 0) {
+                    JOptionPane.showMessageDialog(RateMovieGUI.this, "Por favor, selecciona una puntuación.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+        });
+
         bottomPanel.add(btnCancel);
         bottomPanel.add(btnSave);
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    // --- GETTERS PARA EL CONTROLADOR ---
     public JButton getBtnSave() { return btnSave; }
     public JButton getBtnCancel() { return btnCancel; }
     public JComboBox<String> getComboRating() { return comboRating; }

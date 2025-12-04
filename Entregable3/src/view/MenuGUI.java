@@ -39,7 +39,7 @@ public class MenuGUI extends JFrame {
         // Panel izquierdo
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         userPanel.setBackground(Color.WHITE);
-        JLabel lblUser = new JLabel(userName);
+        JLabel lblUser = new JLabel("Hola "+userName);
         lblUser.setFont(new Font("SansSerif", Font.BOLD, 16));
         lblUser.setForeground(Color.DARK_GRAY);
         userPanel.add(lblUser);
@@ -196,6 +196,15 @@ public class MenuGUI extends JFrame {
         buttonsPanel.setBackground(Color.WHITE);
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(70, 10, 0, 0));
 
+        //Hacemos que al scrollear sobre los botones se scrollee toda la ventana
+        buttonsPanel.addMouseWheelListener(e -> {
+            JScrollBar globalScrollBar = ((JScrollPane)getContentPane()).getVerticalScrollBar();
+            int scrollAmount = e.getUnitsToScroll() * globalScrollBar.getUnitIncrement();
+            globalScrollBar.setValue(globalScrollBar.getValue() + scrollAmount);
+            e.consume();
+        });
+
+        //Configuramos los botones
         JButton[] btnCalificarArray = new JButton[Math.min(films.size(), 10)];
         for (int i = 0; i < Math.min(films.size(), 10); i++) {
             // Se mantiene model.Film aquí
@@ -212,7 +221,7 @@ public class MenuGUI extends JFrame {
             btnCalificarArray[i].setActionCommand(String.valueOf(i));
 
             btnCalificarArray[i].addActionListener(e -> {
-                System.out.println("Calificando: " + film.getTitle());
+                controller.showRateMovieGUI(film,i);
             });
 
             buttonsPanel.add(btnCalificarArray[i]);
@@ -227,6 +236,7 @@ public class MenuGUI extends JFrame {
         mainContentScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); 
         mainContentScroll.setBorder(BorderFactory.createEmptyBorder()); 
         mainContentScroll.setWheelScrollingEnabled(false);
+
 
         centerContainer.add(northCenterPanel, BorderLayout.NORTH);
         centerContainer.add(mainContentScroll, BorderLayout.CENTER); 
@@ -254,6 +264,14 @@ public class MenuGUI extends JFrame {
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
+
+    public void disableButton(int buttonIndex) {
+        btnCalificarArray[buttonIndex].setEnabled(false);
+        btnCalificarArray[buttonIndex].setBackground(new Color(0, 144, 200));
+    }
+
+
+
 
 
     // Getters
