@@ -7,16 +7,16 @@ public class TableCreator {
     public static void createTables(Connection con) throws SQLException {   
         Statement stmt;
         stmt = con.createStatement();
-        String sql=  "CREATE TABLE IF NOT EXISTS FILM ("+
-                     "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
-                     "GENRE INTEGER NOT NULL,"+
-                     "TITLE TEXT(100) NOT NULL,"+
-                     "SyNOPSIS TEXT(500) DEFAULT '-',"+
-                     "DIRECTOR TEXT(100) NOT NULL,"+
+        String sql = "CREATE TABLE IF NOT EXISTS FILM (" +
+                     "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                     "GENRE INTEGER NOT NULL, " +
+                     "TITLE TEXT NOT NULL, " +
+                     "SYNOPSIS TEXT DEFAULT '-', " +
+                     "DIRECTOR TEXT NOT NULL, " +
                      "DURATION INTEGER NOT NULL, " +
-                     "RATING FLOAT DEFAULT 0, " +
-                     "YEAR INTEGER DEFAULT 0, " +
-                     "POSTER TEXT " +
+                     "AVERAGE_RATING REAL DEFAULT 0, " +
+                     "RELEASE_YEAR INTEGER DEFAULT 0, " +
+                     "POSTER TEXT" +
                      ");";
         stmt.executeUpdate(sql);
 

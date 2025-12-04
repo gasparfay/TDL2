@@ -4,9 +4,10 @@ import exceptions.*;
 import java.util.List;
 import javax.swing.*;
 import model.*;
-import service.MyConnection;
-import service.Operations;
+import service.*;
 import view.*;
+
+
 
 
 public class Controllers {
@@ -14,11 +15,15 @@ public class Controllers {
 	private Account activeAccount;
 	private List<Profile> activeProfiles;
 	private int activeProfile;
+	private List<Film> loadedFilms;
+	private List<Film> filmsToDisplay; 
 	
 	public Controllers(Operations ops) {
 		this.ops=ops;
+		loadedFilms=null; 
+		activeAccount=null;	
 	}
-
+	
 	public void showLogin() {
         LoginGUI loginGUI = new LoginGUI(this);
 		this.attachCloseEvent(loginGUI);
@@ -90,9 +95,68 @@ public class Controllers {
 
 	public void enterWithProfile(String name){
 		activeProfile = activeProfiles.indexOf(name);
-		WelcomeGUI welcomeGUI = new WelcomeGUI();
-		this.attachCloseEvent(welcomeGUI);
-		welcomeGUI.setVisible(true);
+		
+    	// THREAD 1 Se encarga de cargar los datos
+    	Thread loaderThread = new Thread(() -> {
+			try{
+				List<Film> allFilms;
+				
+				if (ops.isFilmTableEmpty()) {
+    	    	    ReadCSVFile reader = new ReadCSVFile();  
+    	    	    allFilms = reader.readMoviesFromCSV();	 // Leer desde CSV
+    	    	    ops.loadFilmsInBatch(allFilms);			 //Cargar a la BD
+    	    	    
+    	    	    this.loadedFilms = allFilms;			//Guardar en memoria
+    	    	    this.filmsToDisplay = ops.getTop10Films(allFilms);
+				} else if(this.loadedFilms == null) {
+					allFilms = ops.getAllFilms();		// Cargar desde la BD
+					
+					this.loadedFilms = allFilms;
+					this.filmsToDisplay = ops.getTop10Films(allFilms);
+				} else {
+					this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms);
+				}
+				Thread.sleep(1000); //Simulamos un tiempo de carga de 1s para que se observe la pantalla de carga
+				
+			} catch(Exception e){
+				e.printStackTrace();
+				this.loadedFilms = null;
+			}
+    	});
+
+    	// THREAD 2 Muestra la pantalla de carga hasta que termine el thread 1
+    	Thread loadingThread = new Thread(() -> {
+			
+            LoadingGUI loadingGUI = new LoadingGUI();
+            this.attachCloseEvent(loadingGUI);
+            loadingGUI.setVisible(true);
+
+            try {
+                // Esperar a que termine la carga
+                loaderThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                loadedFilms = null;
+            }
+
+            if (loadedFilms == null || loadedFilms.isEmpty()) {
+                // Algo salió mal: mostrar error y volver al login
+				loadingGUI.dispose();
+                ErrorGUI errorGUI = new ErrorGUI("Error al cargar los datos. Intente nuevamente más tarde.", this);
+                errorGUI.setVisible(true);
+                setActiveAccount(null);
+                return;
+            }
+
+            // Cambiar a la pantalla principal
+            loadingGUI.dispose();
+            WelcomeGUI welcome = new WelcomeGUI(this, filmsToDisplay);
+            this.attachCloseEvent(welcome);
+            welcome.setVisible(true);
+        });
+
+    	loaderThread.start();
+    	loadingThread.start();
 	}
 
 	public Account getActiveAccount() {
