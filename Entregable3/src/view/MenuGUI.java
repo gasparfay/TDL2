@@ -14,6 +14,7 @@ public class MenuGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
+    // Componentes principales de la vista
     private JTable tableFilms;
     private DefaultTableModel tableModel;
     private JTextField txtSearch;
@@ -32,18 +33,22 @@ public class MenuGUI extends JFrame {
         this.controller = controller;
         this.disabledFilms = new HashSet<>();
 
+        // Configuración de la ventana
         setTitle("Plataforma de Streaming - Bienvenida");
         setExtendedState(Frame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Panel principal
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
+        // Panel superior (usuario + búsqueda + logout)
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.WHITE);
         topPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 10, 30));
 
+        // Panel usuario (izquierda)
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         userPanel.setBackground(Color.WHITE);
         JLabel lblUser = new JLabel("Hola " + userName);
@@ -51,6 +56,7 @@ public class MenuGUI extends JFrame {
         lblUser.setForeground(Color.DARK_GRAY);
         userPanel.add(lblUser);
 
+        // Panel acciones (derecha)
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionsPanel.setBackground(Color.WHITE);
 
@@ -89,10 +95,12 @@ public class MenuGUI extends JFrame {
         topPanel.add(actionsPanel, BorderLayout.EAST);
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
+        // Contenedor central (encabezado + tabla + botones)
         JPanel centerContainer = new JPanel(new BorderLayout());
         centerContainer.setBackground(Color.WHITE);
         centerContainer.setBorder(BorderFactory.createEmptyBorder(10, 50, 20, 50));
 
+        // Encabezado (título + subtítulo)
         JPanel headerPanel = new JPanel(new GridLayout(2, 1, 0, 5));
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -108,6 +116,7 @@ public class MenuGUI extends JFrame {
         headerPanel.add(lblTitulo);
         headerPanel.add(lblSub);
 
+        // Panel de ordenamiento
         JPanel sortPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         sortPanel.setBackground(Color.WHITE);
         sortPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -147,6 +156,7 @@ public class MenuGUI extends JFrame {
         northCenterPanel.add(headerPanel, BorderLayout.NORTH);
         northCenterPanel.add(sortPanel, BorderLayout.SOUTH);
 
+        // Definición de columnas y datos de la tabla
         String[] columnas = {"Poster", "Título", "Género", "Resumen"};
 
         Object[][] datos = new Object[Math.min(films.size(), 10)][4];
@@ -159,6 +169,7 @@ public class MenuGUI extends JFrame {
             datos[i][3] = "<html>" + film.getSynopsis() + "<br><br></html>";
         }
 
+        // Modelo de tabla
         tableModel = new DefaultTableModel(datos, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -172,6 +183,7 @@ public class MenuGUI extends JFrame {
             }
         };
 
+        // Tabla de películas
         tableFilms = new JTable(tableModel);
         tableFilms.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(200, 200, 200)));
         tableFilms.setRowHeight(200);
@@ -203,6 +215,7 @@ public class MenuGUI extends JFrame {
             e.consume();
         });
 
+        // Panel que contiene tabla y botones a la derecha
         JPanel tableButtonPanel = new JPanel(new BorderLayout(0, 0));
         tableButtonPanel.setBackground(Color.WHITE);
 
@@ -212,6 +225,7 @@ public class MenuGUI extends JFrame {
         tableButtonPanel.add(tableScroll, BorderLayout.CENTER);
         tableScroll.setWheelScrollingEnabled(false);
 
+        // Panel de botones "Calificar"
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         buttonsPanel.setBackground(Color.WHITE);
@@ -255,10 +269,11 @@ public class MenuGUI extends JFrame {
             int spacing = Math.max(0, rowHeight - buttonHeight);
             buttonsPanel.add(Box.createVerticalStrut(spacing));
         }
-        buttonsPanel.add(Box.createVerticalGlue());
 
+        buttonsPanel.add(Box.createVerticalGlue());
         tableButtonPanel.add(buttonsPanel, BorderLayout.EAST);
 
+        // Scroll principal de contenido central
         JScrollPane mainContentScroll = new JScrollPane(tableButtonPanel);
         mainContentScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         mainContentScroll.setBorder(BorderFactory.createEmptyBorder());
@@ -268,6 +283,7 @@ public class MenuGUI extends JFrame {
         centerContainer.add(mainContentScroll, BorderLayout.CENTER);
         mainPanel.add(centerContainer, BorderLayout.CENTER);
 
+        // Scroll general de la ventana
         JScrollPane globalScroll = new JScrollPane(mainPanel);
         globalScroll.setBorder(BorderFactory.createEmptyBorder());
         globalScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -288,6 +304,7 @@ public class MenuGUI extends JFrame {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
+    // Deshabilita el botón asociado a una película y guarda el estado
     public void disableButton(int buttonIndex) {
         Film film = films.get(buttonIndex);
         disabledFilms.add(film);
@@ -298,6 +315,7 @@ public class MenuGUI extends JFrame {
         targetButton.repaint();
     }
 
+    // Recarga la tabla luego de ordenar o cambiar la lista de films
     private void reloadTable() {
         tableModel.setRowCount(0);
 
@@ -316,6 +334,7 @@ public class MenuGUI extends JFrame {
         tableModel.fireTableDataChanged();
     }
 
+    // Reconstruye el panel de botones manteniendo el estado de deshabilitado
     private void recreateButtonsPanel() {
         buttonsPanel.removeAll();
         btnCalificarArray = new JButton[Math.min(this.films.size(), 10)];
@@ -353,12 +372,15 @@ public class MenuGUI extends JFrame {
             int spacing = Math.max(0, rowHeight - buttonHeight);
             buttonsPanel.add(Box.createVerticalStrut(spacing));
         }
+
         buttonsPanel.add(Box.createVerticalGlue());
         buttonsPanel.revalidate();
         buttonsPanel.repaint();
     }
 
+    // Traduce el enum Genre a un texto amigable
     private String mapGenres(Genre g) {
+        if (g == null) return "";
         switch (g) {
             case ACCION: return "Acción";
             case AVENTURA: return "Aventura";
