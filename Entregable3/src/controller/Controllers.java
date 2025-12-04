@@ -122,30 +122,18 @@ public class Controllers {
     	    	    ReadCSVFile reader = new ReadCSVFile();  
     	    	    allFilms = reader.readMoviesFromCSV();	 // Leer desde CSV
     	    	    ops.loadFilmsInBatch(allFilms);			 //Cargar a la BD
-    	    	    
     	    	    this.loadedFilms = allFilms;			//Guardar en memoria
-					if(firstAcces)     		  										  //Si es su primer acceso
-    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);	 //Cargamos las 10 mejores rankeadas
-					else															//Si ya accedio antes
-						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));  //Cargamos 10 randoms
-				
+							
 				} else if(this.loadedFilms == null) {
 					allFilms = ops.getAllFilms();		// Cargar desde la BD
 					this.loadedFilms = allFilms;
-					if(firstAcces) 
-    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);
-					else
-						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
-				
-				} else {
-					if(firstAcces) 
-    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);
-					else
-						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
-				
 				}
-				loadImagePosters(this.filmsToDisplay);
 				
+				if(firstAcces)     		  										  //Si es su primer acceso
+    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);	 //Cargamos las 10 mejores rankeadas
+					else															//Si ya accedio antes
+						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));  //Cargamos 10 randoms
+				loadImagePosters(this.filmsToDisplay);
 			} catch(Exception e){
 				e.printStackTrace();
 				this.loadedFilms = null;

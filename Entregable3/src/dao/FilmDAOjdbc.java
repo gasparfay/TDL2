@@ -57,13 +57,13 @@ public class FilmDAOjdbc implements FilmDAO {
 
     @Override
     public void loadFilmsInBatch(List<Film> films) {
+        String sql = "INSERT INTO FILM (TITLE, DIRECTOR, SYNOPSIS, DURATION, GENRE, AVERAGE_RATING, RELEASE_YEAR, POSTER) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
             con.setAutoCommit(false);
+            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            String sql = "INSERT INTO FILM (TITLE, DIRECTOR, SYNOPSIS, DURATION, GENRE, AVERAGE_RATING, RELEASE_YEAR, POSTER) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
                 for (Film film : films) {
                     ps.setString(1, film.getTitle());
                     ps.setString(2, film.getDirector());
@@ -73,24 +73,34 @@ public class FilmDAOjdbc implements FilmDAO {
                     ps.setFloat(6, film.getAverageRating());
                     ps.setInt(7, film.getReleaseYear());
                     ps.setString(8, film.getPosterUrl());
-                    ps.addBatch();  // Agregar al batch sin ejecutar
+
+                    ps.executeUpdate();  
+
+                    // Obtener el ID generado
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            int generatedId = rs.getInt(1);
+                            film.setFilmId(generatedId);  
+                        }
+                    }
                 }
-                ps.executeBatch();  // Ejecutar TODO de una vez
             }
 
             con.commit();
             con.setAutoCommit(true);
-            System.out.println("Cargadas " + films.size() + " películas en batch");
+            System.out.println("Cargadas " + films.size() + " películas");
 
         } catch (SQLException e) {
             try {
                 con.rollback();
                 con.setAutoCommit(true);
-            } catch (SQLException ignored) {}
+            } catch (SQLException ignore) {}
+
             System.err.println("Error en batch insert: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     @Override
     public List<Film> findAll() {
