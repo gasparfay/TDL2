@@ -8,4 +8,5 @@ public interface ProfileDAO {
     List<Profile> findAll();
     boolean associateWithAccount(Profile profile, Account account);
     List<Profile> findByAccount(Account account);
+    Profile findById(int id);
 }

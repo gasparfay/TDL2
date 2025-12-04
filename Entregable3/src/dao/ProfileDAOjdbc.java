@@ -130,6 +130,33 @@ public class ProfileDAOjdbc implements ProfileDAO {
         return profiles;
     }
 
-
-
+    @Override
+    public Profile findById(int id) {
+        String sql = "SELECT p.ID, p.NAME, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
+                   + "FROM PROFILE p "
+                   + "LEFT JOIN ACCOUNT a ON p.ACCOUNT_ID = a.ID "
+                   + "WHERE p.ID = ?";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Profile profile = new Profile(rs.getString("NAME"));
+                    profile.setProfileId(rs.getInt("ID"));
+                    
+                    int accId = rs.getInt("ACCOUNT_ID");
+                    if (!rs.wasNull()) {
+                        Account account = new Account(rs.getString("EMAIL"), rs.getString("PASSWORD"));
+                        account.setAccId(accId);
+                        profile.setAccount(account);
+                    }
+                    return profile;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener perfil por ID: " + e.getMessage());
+        }
+        return null;
+    }
 }

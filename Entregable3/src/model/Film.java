@@ -1,5 +1,6 @@
 package model;
 import java.time.Duration;
+import javax.swing.ImageIcon;
 
 
 public class Film {
@@ -12,6 +13,7 @@ public class Film {
     private int releaseYear;     
     private String posterUrl;    
     private float averageRating;
+    private ImageIcon posterImage;
 
     public Film(String title, String director, Duration duration, Genre genre, int releaseYear, String posterUrl, float averageRating) {
         this.title = title;
@@ -99,6 +101,14 @@ public class Film {
 
     public void setAverageRating(float averageRating) { 
         this.averageRating = averageRating; 
+    }
+
+    public ImageIcon getPosterImage() {
+        return posterImage;
+    }
+    
+    public void setPosterImage(ImageIcon posterImage) {
+        this.posterImage = posterImage;
     }
 
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import exceptions.*;
+import java.awt.Image;
 import java.util.List;
 import javax.swing.*;
 import model.*;
@@ -94,7 +95,15 @@ public class Controllers {
 	}
 
 	public void enterWithProfile(String name){
-		activeProfile = activeProfiles.indexOf(name);
+		int profileIndex = 0;
+    	for (int i = 0; i < activeProfiles.size(); i++) {
+    	    if (activeProfiles.get(i).getName().equals(name)) {
+    	        profileIndex = i;
+    	        break; 
+    	    }
+    	}
+
+    	this.activeProfile = profileIndex;
 		
     	// THREAD 1 Se encarga de cargar los datos
     	Thread loaderThread = new Thread(() -> {
@@ -113,10 +122,11 @@ public class Controllers {
 					
 					this.loadedFilms = allFilms;
 					this.filmsToDisplay = ops.getTop10Films(allFilms);
+					loadImagePosters(this.filmsToDisplay);
 				} else {
-					this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms);
+					this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
+					loadImagePosters(this.filmsToDisplay);
 				}
-				Thread.sleep(1000); //Simulamos un tiempo de carga de 1s para que se observe la pantalla de carga
 				
 			} catch(Exception e){
 				e.printStackTrace();
@@ -150,13 +160,38 @@ public class Controllers {
 
             // Cambiar a la pantalla principal
             loadingGUI.dispose();
-            WelcomeGUI welcome = new WelcomeGUI(this, filmsToDisplay);
-            this.attachCloseEvent(welcome);
-            welcome.setVisible(true);
+            MenuGUI menu = new MenuGUI(this, filmsToDisplay, activeProfiles.get(activeProfile).getName());
+            this.attachCloseEvent(menu);
+            menu.setVisible(true);
         });
 
     	loaderThread.start();
     	loadingThread.start();
+	}
+
+	//Carga las imagenes de los posters desde las URLs, y las escala
+	private void loadImagePosters(List<Film> films) {
+		for (Film film : films) {
+			String url = film.getPosterUrl();
+			if (url != null && !url.isEmpty()) {
+				ImageIcon posterImage = null;
+				try {
+					java.net.URL imageUrl = new java.net.URL(url);
+					posterImage = new ImageIcon(imageUrl);
+					Image scaled = posterImage.getImage().getScaledInstance(80, 110, Image.SCALE_SMOOTH);
+					film.setPosterImage(new ImageIcon(scaled));
+				} catch (Exception e) {
+					System.err.println("Error al cargar la imagen desde: " + url + " - " + e.getMessage());
+				}
+			}else{
+				film.setPosterImage(new ImageIcon(getClass().getResource("/media/loginImage.jpeg")));
+			}
+		}
+	}
+
+	public void handleLogout() {
+		setActiveAccount(null);
+		showLogin();
 	}
 
 	public Account getActiveAccount() {

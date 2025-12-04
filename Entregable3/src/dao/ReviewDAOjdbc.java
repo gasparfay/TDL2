@@ -24,7 +24,7 @@ public class ReviewDAOjdbc implements ReviewDAO {
                 ps.setString(2, rev.getText());
                 ps.setInt(3, rev.getStatus().ordinal());
                 ps.setTimestamp(4, new Timestamp(rev.getCreationDate().getTime()));
-                ps.setInt(5, rev.getAccount().getAccId());
+                ps.setInt(5, rev.getProfile().getProfileId());
                 ps.setInt(6, rev.getFilm().getFilmId());
                 ps.executeUpdate();
             }
@@ -52,28 +52,28 @@ public class ReviewDAOjdbc implements ReviewDAO {
     @Override
     public List<Review> findPending() {
         List<Review> pending = new ArrayList<>();
-        String sql = "SELECT ID, RATING, TEXT, STATUS, CREATION_DATE, ACCOUNT_ID, FILM_ID FROM REVIEW WHERE STATUS = ?";
+        String sql = "SELECT ID, RATING, TEXT, STATUS, CREATION_DATE, PROFILE_ID, FILM_ID FROM REVIEW WHERE STATUS = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, ReviewStatus.PENDING.ordinal());
             try (ResultSet rs = ps.executeQuery()) {
-                AccountDAO accountDAO = new AccountDAOjdbc(con);
+                ProfileDAO profileDAO = new ProfileDAOjdbc(con);
                 FilmDAO filmDAO = new FilmDAOjdbc(con);
                 while (rs.next()) {
                     Review review = new Review(
                         Rating.values()[rs.getInt("RATING")],
                         rs.getString("TEXT"),
                         new java.util.Date(rs.getTimestamp("CREATION_DATE").getTime()),
-                        accountDAO.findById(rs.getInt("ACCOUNT_ID")),
+                        profileDAO.findById(rs.getInt("PROFILE_ID")),
                         filmDAO.findById(rs.getInt("FILM_ID"))                   
                         );
                     review.setRevId(rs.getInt("ID"));
                     review.setStatus(ReviewStatus.values()[rs.getInt("STATUS")]);
 
-                    int accId = rs.getInt("ACCOUNT_ID");
-                    Account account = accountDAO.findById(accId);
-                    if (account != null) {
-                        review.setAccount(account);
+                    int profId = rs.getInt("PROFILE_ID");
+                    Profile profile = profileDAO.findById(profId);
+                    if (profile != null) {
+                        review.setProfile(profile);
                     }
 
                     int filmId = rs.getInt("FILM_ID");
@@ -104,5 +104,30 @@ public class ReviewDAOjdbc implements ReviewDAO {
             System.out.println("Error al modificar el estado de la reseña: " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public List<Integer> findFilmIdsByProfile(Profile profile) {
+        List<Integer> filmIds = new ArrayList<>();
+        
+        if (profile == null || profile.getProfileId() == 0) {
+            return filmIds;
+        }
+        
+        String sql = "SELECT DISTINCT FILM_ID FROM REVIEW WHERE PROFILE_ID = ?";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, profile.getProfileId());
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    filmIds.add(rs.getInt("FILM_ID"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener reviews del perfil: " + e.getMessage());
+        }
+        
+        return filmIds;
     }
 }

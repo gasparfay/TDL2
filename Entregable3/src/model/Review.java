@@ -11,15 +11,15 @@ public class Review {
     private Date creationDate;
     private ReviewStatus status;
     private Film film;
-    private Account account;
+    private Profile profile;
 
  
-    public Review(Rating rating, String text, Date creationDate, Account account, Film film) {
+    public Review(Rating rating, String text, Date creationDate, Profile profile, Film film) {
         this.rating = rating;
         this.text = text;
         this.creationDate = creationDate;
         this.status = ReviewStatus.PENDING;
-        this.account = account;
+        this.profile = profile;
         this.film = film;
     }
 
@@ -71,12 +71,12 @@ public class Review {
         this.film = film;
     }
 
-    public Account getAccount() {
-        return account;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
 }

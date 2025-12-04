@@ -65,15 +65,31 @@ public class Operations {
         return new ArrayList<>(films.subList(0, end));
     }
 
-    // Devuelve 10 películas aleatorias de la lista recibida
-    public List<Film> get10RandomFilms(List<Film> films) {
+    // Devuelve 10 películas aleatorias no calificadas por el usuario de la lista recibida
+    public List<Film> get10RandomFilms(List<Film> films, Profile profile) {
         if (films == null || films.isEmpty()) {
             return new ArrayList<>();
         }
-
         
-        List<Film> copy = new ArrayList<>(films);   //Crear una copia para no modificar la lista original
-        Collections.shuffle(copy);                  //Ordenar aleatoriamente
+        // Obtener IDs de películas ya reseñadas por este perfil
+        List<Integer> reviewedFilmIds = reviewDAO.findFilmIdsByProfile(profile);
+        
+        // Filtrar películas: excluir las ya reseñadas
+        List<Film> availableFilms = new ArrayList<>();
+        for (Film film : films) {
+            if (!reviewedFilmIds.contains(film.getFilmId())) {
+                availableFilms.add(film);
+            }
+        }
+        
+        // Si no hay películas disponibles, retornar lista vacía
+        if (availableFilms.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // Crear una copia y ordenar aleatoriamente
+        List<Film> copy = new ArrayList<>(availableFilms);
+        Collections.shuffle(copy);
 
         // Devolver los primeros 10 elementos (o menos si hay menos de 10)
         int end = Math.min(10, copy.size());
