@@ -18,9 +18,9 @@ El proyecto mantiene la estructura basada en el patrón **MVC**, garantizando la
 
 ## Aclaraciones
 ### ✓ Cambio en la Base de Datos
-Para el correcto funcionamiento de la aplicación fue necesario adaptar la estructura de algunas tablas, y en base a esto ajustar los DAOs. En particular, se incorporó el campo **`NEVER_LOG_IN`** en la tabla **Profile**, cuyo propósito es registrar si un perfil accede por primera vez a la plataforma. Este dato es fundamental para determinar qué conjunto de películas mostrar al usuario en su primer ingreso.
+Para el correcto funcionamiento de la aplicación fue necesario adaptar la estructura de algunas tablas, y en base a esto ajustar los DAOs. En particular, se incorporó el campo **`NEVER_LOG_IN`** en la tabla **Profile**, cuyo propósito es registrar si un perfil accede por primera vez a la plataforma. Este dato sirve para determinar qué conjunto de películas mostrar al usuario en su primer ingreso.
 
-### ✓ Cambio en la funcionalidad de Agregar Perfil
+### ✓ Agregado de perfiles
 Con el fin de respetar el modelo definido en entregas anteriores, se implementó la posibilidad de que cada cuenta posea múltiples perfiles. Al iniciar sesión, el usuario puede seleccionar con cuál de esos perfiles desea acceder, manteniendo la coherencia con el diseño planteado en las etapas previas del proyecto.
 
 ### ✓ Consideración sobre accesos sucesivos de un usuario
