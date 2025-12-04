@@ -5,8 +5,10 @@ public class Profile {
     private int profileId;
     private String name;
 	private Account account;
+	private boolean neverLogIn;
 
 	public Profile(String name) {
+		neverLogIn = true;
         this.name = name;
     }
 
@@ -32,5 +34,12 @@ public class Profile {
 
 	public Account getAccount() {
 		return account;
+	}
+	
+	public boolean getNeverLogIn() {
+		return neverLogIn;
+	}
+	public void setNeverLogIn(boolean neverLogIn) {
+		this.neverLogIn = neverLogIn;
 	}
 }

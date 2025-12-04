@@ -105,6 +105,13 @@ public class Controllers {
     	}
 
     	this.activeProfile = profileIndex;
+		final boolean firstAcces;
+		if(activeProfiles.get(activeProfile).getNeverLogIn()){
+			ops.setProfileLogIn(activeProfiles.get(activeProfile));  //Indicamos que ya se logeo por primera vez
+			firstAcces = true;
+		} else{
+			firstAcces = false;
+		}
 		
     	// THREAD 1 Se encarga de cargar los datos
     	Thread loaderThread = new Thread(() -> {
@@ -117,17 +124,27 @@ public class Controllers {
     	    	    ops.loadFilmsInBatch(allFilms);			 //Cargar a la BD
     	    	    
     	    	    this.loadedFilms = allFilms;			//Guardar en memoria
-    	    	    this.filmsToDisplay = ops.getTop10Films(allFilms);
+					if(firstAcces)     		  										  //Si es su primer acceso
+    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);	 //Cargamos las 10 mejores rankeadas
+					else															//Si ya accedio antes
+						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));  //Cargamos 10 randoms
+				
 				} else if(this.loadedFilms == null) {
 					allFilms = ops.getAllFilms();		// Cargar desde la BD
-					
 					this.loadedFilms = allFilms;
-					this.filmsToDisplay = ops.getTop10Films(allFilms);
-					loadImagePosters(this.filmsToDisplay);
+					if(firstAcces) 
+    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);
+					else
+						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
+				
 				} else {
-					this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
-					loadImagePosters(this.filmsToDisplay);
+					if(firstAcces) 
+    	    	    	this.filmsToDisplay = ops.getTop10Films(this.loadedFilms);
+					else
+						this.filmsToDisplay = ops.get10RandomFilms(this.loadedFilms, activeProfiles.get(activeProfile));
+				
 				}
+				loadImagePosters(this.filmsToDisplay);
 				
 			} catch(Exception e){
 				e.printStackTrace();
@@ -179,7 +196,7 @@ public class Controllers {
 				try {
 					java.net.URL imageUrl = new java.net.URL(url);
 					posterImage = new ImageIcon(imageUrl);
-					Image scaled = posterImage.getImage().getScaledInstance(80, 110, Image.SCALE_SMOOTH);
+					Image scaled = posterImage.getImage().getScaledInstance(146, 200, Image.SCALE_SMOOTH);
 					film.setPosterImage(new ImageIcon(scaled));
 				} catch (Exception e) {
 					System.err.println("Error al cargar la imagen desde: " + url + " - " + e.getMessage());
@@ -213,7 +230,7 @@ public class Controllers {
 		try{
 			film =  filmConsultant.searchFilm(title);
 		} catch (APIException e){
-			JOptionPane.showMessageDialog(this.menuGUI,"Error al buscar la película: " + title,  "No se encuentra disponible",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.menuGUI,"La pelicula" + title +" no se encuentra disponible",  "Pelicula no encontrada",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		MovieInfoGUI movieInfoGUI = new MovieInfoGUI(this, film);
@@ -232,6 +249,7 @@ public class Controllers {
             films.sort(new model.FilmComparatorGenre());
         return films;
     }
+	
 	public List<Profile> getProfiles(){
 		activeProfiles = ops.getProfiles(activeAccount);
 		return activeProfiles;

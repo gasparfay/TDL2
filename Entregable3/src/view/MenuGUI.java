@@ -2,7 +2,9 @@ package view;
 
 import controller.Controllers;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -21,33 +23,34 @@ public class MenuGUI extends JFrame {
     private JButton btnSortGenre;
     private JButton[] btnCalificarArray;
     private List<Film> films;
+    private Controllers controller;
+    private JPanel buttonsPanel;
+    private Set<Film> disabledFilms;
 
     public MenuGUI(Controllers controller, List<Film> films, String userName) {
         this.films = films;
-        // Configuración de ventana
+        this.controller = controller;
+        this.disabledFilms = new HashSet<>();
+
         setTitle("Plataforma de Streaming - Bienvenida");
-        setSize(1100, 750);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        // panel superior
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.WHITE);
         topPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 10, 30));
 
-        // Panel izquierdo
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         userPanel.setBackground(Color.WHITE);
-        JLabel lblUser = new JLabel("Hola "+userName);
+        JLabel lblUser = new JLabel("Hola " + userName);
         lblUser.setFont(new Font("SansSerif", Font.BOLD, 16));
         lblUser.setForeground(Color.DARK_GRAY);
         userPanel.add(lblUser);
 
-        // Panel derecho
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         actionsPanel.setBackground(Color.WHITE);
 
@@ -61,7 +64,7 @@ public class MenuGUI extends JFrame {
         btnSearch.setFocusPainted(false);
         btnSearch.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
         btnSearch.setPreferredSize(new Dimension(40, 28));
-        btnSearch.addActionListener(e ->{
+        btnSearch.addActionListener(e -> {
             controller.handleSearch(txtSearch.getText());
         });
 
@@ -72,11 +75,11 @@ public class MenuGUI extends JFrame {
         btnLogout.setFocusPainted(false);
         btnLogout.setBorderPainted(false);
         btnLogout.setPreferredSize(new Dimension(120, 28));
-        
+
         btnLogout.addActionListener(e -> {
             controller.handleLogout();
             dispose();
-        }); 
+        });
 
         actionsPanel.add(txtSearch);
         actionsPanel.add(btnSearch);
@@ -86,7 +89,6 @@ public class MenuGUI extends JFrame {
         topPanel.add(actionsPanel, BorderLayout.EAST);
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // Panel central
         JPanel centerContainer = new JPanel(new BorderLayout());
         centerContainer.setBackground(Color.WHITE);
         centerContainer.setBorder(BorderFactory.createEmptyBorder(10, 50, 20, 50));
@@ -106,7 +108,6 @@ public class MenuGUI extends JFrame {
         headerPanel.add(lblTitulo);
         headerPanel.add(lblSub);
 
-        // Botones de ordenar
         JPanel sortPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         sortPanel.setBackground(Color.WHITE);
         sortPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -118,9 +119,9 @@ public class MenuGUI extends JFrame {
         styleSortButton(btnSortTitle);
         btnSortTitle.addActionListener(e -> {
             try {
-                this.films=controller.handleSort(this.films, "Title");
+                this.films = controller.handleSort(this.films, "Title");
                 reloadTable();
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + ex.getMessage());
             }
         });
@@ -130,9 +131,9 @@ public class MenuGUI extends JFrame {
 
         btnSortGenre.addActionListener(e -> {
             try {
-                this.films=controller.handleSort(this.films, "Genre");
+                this.films = controller.handleSort(this.films, "Genre");
                 reloadTable();
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + ex.getMessage());
             }
         });
@@ -146,17 +147,16 @@ public class MenuGUI extends JFrame {
         northCenterPanel.add(headerPanel, BorderLayout.NORTH);
         northCenterPanel.add(sortPanel, BorderLayout.SOUTH);
 
-        // Tabla
         String[] columnas = {"Poster", "Título", "Género", "Resumen"};
 
         Object[][] datos = new Object[Math.min(films.size(), 10)][4];
-        
+
         for (int i = 0; i < Math.min(films.size(), 10); i++) {
             Film film = films.get(i);
             datos[i][0] = film.getPosterImage();
-            datos[i][1] = film.getTitle();
-            datos[i][2] = film.getGenre() != null ? film.getGenre().toString() : "";
-            datos[i][3] = film.getSynopsis();
+            datos[i][1] = "<html>" + film.getTitle() + "<br><br></html>";
+            datos[i][2] = "<html>" + (film.getGenre() != null ? mapGenres(film.getGenre()) : "") + "<br><br></html>";
+            datos[i][3] = "<html>" + film.getSynopsis() + "<br><br></html>";
         }
 
         tableModel = new DefaultTableModel(datos, columnas) {
@@ -164,6 +164,7 @@ public class MenuGUI extends JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 0) return ImageIcon.class;
@@ -173,7 +174,7 @@ public class MenuGUI extends JFrame {
 
         tableFilms = new JTable(tableModel);
         tableFilms.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(200, 200, 200)));
-        tableFilms.setRowHeight(100);
+        tableFilms.setRowHeight(200);
         tableFilms.setSelectionBackground(new Color(232, 240, 254));
         tableFilms.setSelectionForeground(Color.BLACK);
         tableFilms.setShowVerticalLines(true);
@@ -195,9 +196,8 @@ public class MenuGUI extends JFrame {
         tableFilms.getColumnModel().getColumn(2).setPreferredWidth(120);
         tableFilms.getColumnModel().getColumn(3).setPreferredWidth(300);
 
-        //Hacemos que al scrollear sobre la tabla se scrollee toda la ventana
         tableFilms.addMouseWheelListener(e -> {
-            JScrollBar globalScrollBar = ((JScrollPane)getContentPane()).getVerticalScrollBar();
+            JScrollBar globalScrollBar = ((JScrollPane) getContentPane()).getVerticalScrollBar();
             int scrollAmount = e.getUnitsToScroll() * globalScrollBar.getUnitIncrement();
             globalScrollBar.setValue(globalScrollBar.getValue() + scrollAmount);
             e.consume();
@@ -205,34 +205,29 @@ public class MenuGUI extends JFrame {
 
         JPanel tableButtonPanel = new JPanel(new BorderLayout(0, 0));
         tableButtonPanel.setBackground(Color.WHITE);
-        
+
         JScrollPane tableScroll = new JScrollPane(tableFilms);
-        tableScroll.getViewport().setBackground(Color.WHITE);
-        tableScroll.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230)));
+        tableScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        tableScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         tableButtonPanel.add(tableScroll, BorderLayout.CENTER);
         tableScroll.setWheelScrollingEnabled(false);
 
-
-        // Panel de los botones "Calificar"
-        JPanel buttonsPanel = new JPanel();
+        buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         buttonsPanel.setBackground(Color.WHITE);
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(70, 10, 0, 0));
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(100, 10, 0, 0));
 
-        //Hacemos que al scrollear sobre los botones se scrollee toda la ventana
         buttonsPanel.addMouseWheelListener(e -> {
-            JScrollBar globalScrollBar = ((JScrollPane)getContentPane()).getVerticalScrollBar();
+            JScrollBar globalScrollBar = ((JScrollPane) getContentPane()).getVerticalScrollBar();
             int scrollAmount = e.getUnitsToScroll() * globalScrollBar.getUnitIncrement();
             globalScrollBar.setValue(globalScrollBar.getValue() + scrollAmount);
             e.consume();
         });
 
-        //Configuramos los botones
         btnCalificarArray = new JButton[Math.min(films.size(), 10)];
         for (int i = 0; i < Math.min(films.size(), 10); i++) {
             Film film = films.get(i);
-
-            final int filmIndex = i; 
+            final int filmIndex = i;
 
             btnCalificarArray[i] = new JButton("Calificar Película");
             btnCalificarArray[i].setBackground(new Color(0, 144, 255));
@@ -242,39 +237,42 @@ public class MenuGUI extends JFrame {
             btnCalificarArray[i].setBorderPainted(false);
             btnCalificarArray[i].setMaximumSize(new Dimension(150, 28));
             btnCalificarArray[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-            btnCalificarArray[i].setActionCommand(String.valueOf(filmIndex)); // Usamos filmIndex
+            btnCalificarArray[i].setActionCommand(String.valueOf(filmIndex));
+
+            if (disabledFilms.contains(film)) {
+                btnCalificarArray[i].setEnabled(false);
+                btnCalificarArray[i].setBackground(new Color(125, 125, 125));
+            }
 
             btnCalificarArray[i].addActionListener(e -> {
-                // ** Usamos la variable final filmIndex en lugar de i **
-                controller.showRateMovieGUI(film, filmIndex); 
+                controller.showRateMovieGUI(film, filmIndex);
             });
 
             buttonsPanel.add(btnCalificarArray[i]);
-            buttonsPanel.add(Box.createVerticalStrut(72)); 
+
+            int rowHeight = tableFilms.getRowHeight();
+            int buttonHeight = btnCalificarArray[i].getPreferredSize().height;
+            int spacing = Math.max(0, rowHeight - buttonHeight);
+            buttonsPanel.add(Box.createVerticalStrut(spacing));
         }
         buttonsPanel.add(Box.createVerticalGlue());
 
         tableButtonPanel.add(buttonsPanel, BorderLayout.EAST);
-        
-        // JScrollPane para la tabla y los botones
+
         JScrollPane mainContentScroll = new JScrollPane(tableButtonPanel);
-        mainContentScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); 
-        mainContentScroll.setBorder(BorderFactory.createEmptyBorder()); 
+        mainContentScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainContentScroll.setBorder(BorderFactory.createEmptyBorder());
         mainContentScroll.setWheelScrollingEnabled(false);
 
-
         centerContainer.add(northCenterPanel, BorderLayout.NORTH);
-        centerContainer.add(mainContentScroll, BorderLayout.CENTER); 
+        centerContainer.add(mainContentScroll, BorderLayout.CENTER);
         mainPanel.add(centerContainer, BorderLayout.CENTER);
 
-        //ScrollPane de la ventana
         JScrollPane globalScroll = new JScrollPane(mainPanel);
-        globalScroll.setBorder(BorderFactory.createEmptyBorder()); 
+        globalScroll.setBorder(BorderFactory.createEmptyBorder());
         globalScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         JScrollBar verticalScrollBar = globalScroll.getVerticalScrollBar();
         verticalScrollBar.setUnitIncrement(30);
-
-        
 
         setContentPane(globalScroll);
     }
@@ -284,58 +282,130 @@ public class MenuGUI extends JFrame {
         btn.setForeground(Color.DARK_GRAY);
         btn.setFocusPainted(false);
         btn.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(Color.LIGHT_GRAY, 1),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                new LineBorder(Color.LIGHT_GRAY, 1),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public void disableButton(int buttonIndex) {
+        Film film = films.get(buttonIndex);
+        disabledFilms.add(film);
         JButton targetButton = btnCalificarArray[buttonIndex];
         targetButton.setEnabled(false);
         targetButton.setBackground(new Color(125, 125, 125));
-        targetButton.revalidate(); 
+        targetButton.revalidate();
         targetButton.repaint();
     }
 
     private void reloadTable() {
-        // 1. Limpiar el modelo existente
         tableModel.setRowCount(0);
-        
-        // 2. Recargar los datos desde la lista actual (this.films)
-        // Solo mostramos hasta 10 filas, como está configurado en el constructor
+
         for (int i = 0; i < Math.min(this.films.size(), 10); i++) {
             Film film = this.films.get(i);
-            
-            // Agregar la nueva fila con los datos reordenados
             tableModel.addRow(new Object[]{
-                film.getPosterImage(),
-                film.getTitle(),
-                film.getGenre() != null ? film.getGenre().toString() : "",
-                film.getSynopsis()
+                    film.getPosterImage(),
+                    "<html>" + film.getTitle() + "<br><br></html>",
+                    "<html>" + (film.getGenre() != null ? mapGenres(film.getGenre()) : "") + "<br><br></html>",
+                    "<html>" + film.getSynopsis() + "<br><br></html>"
             });
-            
-            // NOTA IMPORTANTE: Si los botones de "Calificar" se reordenan visualmente
-            // con la tabla, el array btnCalificarArray también DEBE ser reordenado o recreado
-            // en este punto para que el 'filmIndex' siga siendo coherente.
-            // Para una solución simple, debes asegurarte de que el botón en la fila 'i'
-            // corresponda al film en la lista 'films.get(i)'.
         }
-        
-        // 3. Notificar a la tabla que los datos han cambiado
+        recreateButtonsPanel();
+        buttonsPanel.revalidate();
+        buttonsPanel.repaint();
         tableModel.fireTableDataChanged();
     }
 
+    private void recreateButtonsPanel() {
+        buttonsPanel.removeAll();
+        btnCalificarArray = new JButton[Math.min(this.films.size(), 10)];
 
+        for (int i = 0; i < Math.min(this.films.size(), 10); i++) {
+            Film film = this.films.get(i);
+            final int filmIndex = i;
 
+            JButton btn = new JButton("Calificar Película");
 
+            btn.setBackground(new Color(0, 144, 255));
+            btn.setForeground(Color.WHITE);
+            btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+            btn.setFocusPainted(false);
+            btn.setBorderPainted(false);
+            btn.setMaximumSize(new Dimension(150, 28));
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btn.setActionCommand(String.valueOf(filmIndex));
 
-    // Getters
-    public JTable getTableFilms() { return tableFilms; }
-    public DefaultTableModel getTableModel() { return tableModel; }
-    public JTextField getTxtSearch() { return txtSearch; }
-    public JButton getBtnSearch() { return btnSearch; }
-    public JButton getBtnLogout() { return btnLogout; }
-    public JButton getBtnSortTitle() { return btnSortTitle; }
-    public JButton getBtnSortGenre() { return btnSortGenre; }
+            if (disabledFilms.contains(film)) {
+                btn.setEnabled(false);
+                btn.setBackground(new Color(125, 125, 125));
+            }
+
+            btnCalificarArray[i] = btn;
+
+            btnCalificarArray[i].addActionListener(e -> {
+                controller.showRateMovieGUI(film, filmIndex);
+            });
+
+            buttonsPanel.add(btnCalificarArray[i]);
+
+            int rowHeight = tableFilms.getRowHeight();
+            int buttonHeight = btn.getPreferredSize().height;
+            int spacing = Math.max(0, rowHeight - buttonHeight);
+            buttonsPanel.add(Box.createVerticalStrut(spacing));
+        }
+        buttonsPanel.add(Box.createVerticalGlue());
+        buttonsPanel.revalidate();
+        buttonsPanel.repaint();
+    }
+
+    private String mapGenres(Genre g) {
+        switch (g) {
+            case ACCION: return "Acción";
+            case AVENTURA: return "Aventura";
+            case ANIMACION: return "Animación";
+            case COMEDIA: return "Comedia";
+            case CRIMEN: return "Crimen";
+            case DRAMA: return "Drama";
+            case FANTASIA: return "Fantasía";
+            case HISTORIA: return "Historia";
+            case TERROR: return "Terror";
+            case MUSICA: return "Música";
+            case MISTERIO: return "Misterio";
+            case ROMANCE: return "Romance";
+            case GUERRA: return "Guerra";
+            case INFANTIL: return "Infantil";
+            case DEPORTE: return "Deporte";
+            case DOCUMENTAL: return "Documental";
+            case CIENCIA_FICCION: return "Ciencia Ficción";
+            default: return "Otro";
+        }
+    }
+
+    public JTable getTableFilms() {
+        return tableFilms;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
+    }
+
+    public JTextField getTxtSearch() {
+        return txtSearch;
+    }
+
+    public JButton getBtnSearch() {
+        return btnSearch;
+    }
+
+    public JButton getBtnLogout() {
+        return btnLogout;
+    }
+
+    public JButton getBtnSortTitle() {
+        return btnSortTitle;
+    }
+
+    public JButton getBtnSortGenre() {
+        return btnSortGenre;
+    }
 }

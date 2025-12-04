@@ -19,16 +19,20 @@ public class ProfileDAOjdbc implements ProfileDAO {
 
             String insertSql;
             if (profile.getAccount()!=null) {
-                insertSql = "INSERT INTO PROFILE (name, account_id) VALUES (?, ?)";
+                insertSql = "INSERT INTO PROFILE (name, account_id, never_log_in) VALUES (?, ?, ?)";
                 try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                     ps.setString(1, profile.getName());
                     ps.setInt(2, profile.getAccount().getAccId());
+                    // LLAMADA CORREGIDA: Usar isNeverLogIn()
+                    ps.setInt(3, profile.getNeverLogIn() ? 1 : 0);
                     ps.executeUpdate();
                 }
             } else {
-                insertSql = "INSERT INTO PROFILE (name, account_id) VALUES (?, NULL)";
+                insertSql = "INSERT INTO PROFILE (name, account_id, never_log_in) VALUES (?, NULL, ?)";
                 try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                     ps.setString(1, profile.getName());
+                    // LLAMADA CORREGIDA: Usar isNeverLogIn()
+                    ps.setInt(2, profile.getNeverLogIn() ? 1 : 0);
                     ps.executeUpdate();
                 }
             }
@@ -56,7 +60,7 @@ public class ProfileDAOjdbc implements ProfileDAO {
     @Override
     public List<Profile> findAll() {
         List<Profile> profiles = new ArrayList<>();
-        String sql = "SELECT p.ID, p.NAME, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
+        String sql = "SELECT p.ID, p.NAME, p.NEVER_LOG_IN, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
                    + "FROM PROFILE p "
                    + "LEFT JOIN ACCOUNT a ON p.ACCOUNT_ID = a.ID";
         
@@ -65,6 +69,9 @@ public class ProfileDAOjdbc implements ProfileDAO {
             while (rs.next()) {
                 Profile profile = new Profile(rs.getString("NAME"));
                 profile.setProfileId(rs.getInt("ID"));
+                // LLAMADA CORREGIDA: Usar setNeverLogIn()
+                profile.setNeverLogIn(rs.getInt("NEVER_LOG_IN") == 1);
+
                 int accId = rs.getInt("ACCOUNT_ID");
                 if (!rs.wasNull()) {
                     Account account = new Account(rs.getString("EMAIL"), rs.getString("PASSWORD"));
@@ -108,9 +115,9 @@ public class ProfileDAOjdbc implements ProfileDAO {
     public List<Profile> findByAccount(Account account){
         List<Profile> profiles = new ArrayList<>();
         if (account == null || account.getAccId() == 0) {
-            return profiles; 
+            return profiles;
         }
-        String sql = "SELECT ID, NAME FROM PROFILE WHERE ACCOUNT_ID = ?";
+        String sql = "SELECT ID, NAME, NEVER_LOG_IN FROM PROFILE WHERE ACCOUNT_ID = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, account.getAccId());
@@ -120,6 +127,8 @@ public class ProfileDAOjdbc implements ProfileDAO {
                     Profile profile = new Profile(rs.getString("NAME"));
                     profile.setProfileId(rs.getInt("ID"));
                     profile.setAccount(account);
+                    // LLAMADA CORREGIDA: Usar setNeverLogIn()
+                    profile.setNeverLogIn(rs.getInt("NEVER_LOG_IN") == 1);
                     profiles.add(profile);
                 }
             }
@@ -132,7 +141,7 @@ public class ProfileDAOjdbc implements ProfileDAO {
 
     @Override
     public Profile findById(int id) {
-        String sql = "SELECT p.ID, p.NAME, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
+        String sql = "SELECT p.ID, p.NAME, p.NEVER_LOG_IN, a.ID AS ACCOUNT_ID, a.EMAIL, a.PASSWORD "
                    + "FROM PROFILE p "
                    + "LEFT JOIN ACCOUNT a ON p.ACCOUNT_ID = a.ID "
                    + "WHERE p.ID = ?";
@@ -144,6 +153,8 @@ public class ProfileDAOjdbc implements ProfileDAO {
                 if (rs.next()) {
                     Profile profile = new Profile(rs.getString("NAME"));
                     profile.setProfileId(rs.getInt("ID"));
+                    // LLAMADA CORREGIDA: Usar setNeverLogIn()
+                    profile.setNeverLogIn(rs.getInt("NEVER_LOG_IN") == 1);
                     
                     int accId = rs.getInt("ACCOUNT_ID");
                     if (!rs.wasNull()) {
@@ -158,5 +169,29 @@ public class ProfileDAOjdbc implements ProfileDAO {
             System.out.println("Error al obtener perfil por ID: " + e.getMessage());
         }
         return null;
+    }
+    
+    @Override
+    public boolean updateNeverLogIn(Profile profile, Boolean state) {
+        try {
+            String updateSql = "UPDATE PROFILE SET NEVER_LOG_IN = ? WHERE ID = ?";
+            
+            try (PreparedStatement ps = con.prepareStatement(updateSql)) {
+                ps.setInt(1, state ? 1 : 0);
+                ps.setInt(2, profile.getProfileId());
+                
+                int rowsAffected = ps.executeUpdate();
+                
+                if (rowsAffected > 0) {
+                    // LLAMADA CORREGIDA: Usar setNeverLogIn()
+                    profile.setNeverLogIn(state);
+                    return true;
+                }
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el estado de primer acceso (NEVER_LOG_IN) para el perfil: " + profile.getName() + " - " + e.getMessage());
+            return false;
+        }
     }
 }

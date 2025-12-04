@@ -9,4 +9,5 @@ public interface ProfileDAO {
     boolean associateWithAccount(Profile profile, Account account);
     List<Profile> findByAccount(Account account);
     Profile findById(int id);
+     public boolean updateNeverLogIn(Profile profile, Boolean state);
 }

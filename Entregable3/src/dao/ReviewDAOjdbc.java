@@ -18,7 +18,7 @@ public class ReviewDAOjdbc implements ReviewDAO {
         try {
             con.setAutoCommit(false);
 
-            String insertSql = "INSERT INTO REVIEW (RATING, TEXT, STATUS, CREATION_DATE, ACCOUNT_ID, FILM_ID) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSql = "INSERT INTO REVIEW (RATING, TEXT, STATUS, CREATION_DATE, PROFILE_ID, FILM_ID) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
                 ps.setInt(1, rev.getRating().ordinal());
                 ps.setString(2, rev.getText());

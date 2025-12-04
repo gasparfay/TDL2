@@ -18,7 +18,7 @@ public class ProfileSelectionGUI extends JFrame {
         this.controller = controller;
 
         setTitle("Plataforma de Streaming - Elegir perfil");
-        setSize(900, 600);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

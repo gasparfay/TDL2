@@ -99,4 +99,9 @@ public class Operations {
     public void addReview(Review rev) {
         reviewDAO.loadReview(rev);
     }
+
+    public void setProfileLogIn(Profile profile) {
+        profile.setNeverLogIn(false);
+        profileDAO.updateNeverLogIn(profile,false);
+    }
 }

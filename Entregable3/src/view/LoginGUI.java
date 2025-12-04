@@ -23,7 +23,7 @@ public class LoginGUI extends JFrame {
 
         // Configuración de la ventana
         setTitle("Bienvenido a la Plataforma de Streaming");
-        setSize(1100, 600);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

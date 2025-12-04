@@ -9,7 +9,7 @@ public class LoadingGUI extends JFrame {
 
     public LoadingGUI() {
         setTitle("Plataforma de Streaming - Bienvenida");
-        setSize(900, 700);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

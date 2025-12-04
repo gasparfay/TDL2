@@ -31,6 +31,7 @@ public class TableCreator {
             "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
             "NAME TEXT(50) NOT NULL UNIQUE,"+
             "ACCOUNT_ID INTEGER,"+
+            "NEVER_LOG_IN INTEGER DEFAULT (1) NOT NULL,"+
             "CONSTRAINT PROFILE_ACCOUNT_FK FOREIGN KEY (ACCOUNT_ID) REFERENCES ACCOUNT(ID)"+
             ");";
         stmt.executeUpdate(sql);
