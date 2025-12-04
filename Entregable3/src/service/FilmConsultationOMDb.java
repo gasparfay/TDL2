@@ -19,12 +19,10 @@ public class FilmConsultationOMDb {
 
     public Film searchFilm(String titulo) throws APIException {
         try {
-            // 1. Validación: Verificar que el título no venga vacío
             if (titulo == null || titulo.trim().isEmpty()) {
                 throw new APIException("El título no puede estar vacío.");
             }
 
-            // 2. Preparación: Construir la URL (encodeando espacios simples)
             String url = BASE_URL + titulo.replace(" ", "+");
             
             // 3. Conexión: Crear el cliente y la solicitud HTTP
@@ -81,16 +79,12 @@ public class FilmConsultationOMDb {
             film.setSynopsis(plot);
             film.setReleaseYear(year);
             film.setPosterUrl(poster);
-            film.setAverageRating(rating);
+            film.setAverageRating(rating/2); //Ajustamos de 0-10 a 0-5 estrellas
 
             return film;
 
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Restaura estado del hilo
-            throw new APIException("Búsqueda interrumpida", e);
-        } catch (Exception e) {
-            // Captura cualquier otro error técnico (IO, JSON)
-            throw new APIException("Error conectando a OMDb: " + e.getMessage(), e);
+        }catch (Exception e) {
+                throw new APIException("Error conectando a OMDb: " + e.getMessage());
         }
     }
 }

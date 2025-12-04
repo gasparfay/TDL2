@@ -202,16 +202,36 @@ public class Controllers {
 	}
 
 	public void handleSaveReview(int rating, String reviewText, Profile profile, Film film, int index) {
-		Review newReview = new Review(Rating.values()[rating], reviewText, new java.util.Date(), profile, film);
+		Review newReview = new Review(Rating.values()[rating-1], reviewText, new java.util.Date(), profile, film);
 		ops.addReview(newReview);
 		this.menuGUI.disableButton(index);
-		
+	}
+
+	public void handleSearch(String title) {
+		FilmConsultationOMDb filmConsultant = new FilmConsultationOMDb();
+		Film film;
+		try{
+			film =  filmConsultant.searchFilm(title);
+		} catch (APIException e){
+			JOptionPane.showMessageDialog(this.menuGUI,"Error al buscar la película: " + title,  "No se encuentra disponible",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		MovieInfoGUI movieInfoGUI = new MovieInfoGUI(this, film);
+		this.attachCloseEvent(movieInfoGUI);
+		movieInfoGUI.setVisible(true);
 	}
 
 	public Account getActiveAccount() {
 		return this.activeAccount;
 	}
 	
+	public List<Film> handleSort( List<Film> films, String criterio){
+        if("Title".equals(criterio))
+            films.sort(new model.FilmComparatorTitle());
+        else if("Genre".equals(criterio))
+            films.sort(new model.FilmComparatorGenre());
+        return films;
+    }
 	public List<Profile> getProfiles(){
 		activeProfiles = ops.getProfiles(activeAccount);
 		return activeProfiles;

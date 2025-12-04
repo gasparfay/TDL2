@@ -131,9 +131,6 @@ public class RateMovieGUI extends JFrame {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-
-
-
     public JButton getBtnSave() { return btnSave; }
     public JButton getBtnCancel() { return btnCancel; }
     public JComboBox<String> getComboRating() { return comboRating; }

@@ -20,8 +20,10 @@ public class MenuGUI extends JFrame {
     private JButton btnSortTitle;
     private JButton btnSortGenre;
     private JButton[] btnCalificarArray;
+    private List<Film> films;
 
     public MenuGUI(Controllers controller, List<Film> films, String userName) {
+        this.films = films;
         // Configuración de ventana
         setTitle("Plataforma de Streaming - Bienvenida");
         setSize(1100, 750);
@@ -59,6 +61,9 @@ public class MenuGUI extends JFrame {
         btnSearch.setFocusPainted(false);
         btnSearch.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
         btnSearch.setPreferredSize(new Dimension(40, 28));
+        btnSearch.addActionListener(e ->{
+            controller.handleSearch(txtSearch.getText());
+        });
 
         btnLogout = new JButton("Cerrar Sesión");
         btnLogout.setBackground(new Color(220, 53, 69));
@@ -111,9 +116,26 @@ public class MenuGUI extends JFrame {
 
         btnSortTitle = new JButton("Título ↕");
         styleSortButton(btnSortTitle);
+        btnSortTitle.addActionListener(e -> {
+            try {
+                this.films=controller.handleSort(this.films, "Title");
+                reloadTable();
+            }catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + ex.getMessage());
+            }
+        });
 
         btnSortGenre = new JButton("Género ↕");
         styleSortButton(btnSortGenre);
+
+        btnSortGenre.addActionListener(e -> {
+            try {
+                this.films=controller.handleSort(this.films, "Genre");
+                reloadTable();
+            }catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + ex.getMessage());
+            }
+        });
 
         sortPanel.add(lblSort);
         sortPanel.add(btnSortTitle);
@@ -274,6 +296,34 @@ public class MenuGUI extends JFrame {
         targetButton.setBackground(new Color(125, 125, 125));
         targetButton.revalidate(); 
         targetButton.repaint();
+    }
+
+    private void reloadTable() {
+        // 1. Limpiar el modelo existente
+        tableModel.setRowCount(0);
+        
+        // 2. Recargar los datos desde la lista actual (this.films)
+        // Solo mostramos hasta 10 filas, como está configurado en el constructor
+        for (int i = 0; i < Math.min(this.films.size(), 10); i++) {
+            Film film = this.films.get(i);
+            
+            // Agregar la nueva fila con los datos reordenados
+            tableModel.addRow(new Object[]{
+                film.getPosterImage(),
+                film.getTitle(),
+                film.getGenre() != null ? film.getGenre().toString() : "",
+                film.getSynopsis()
+            });
+            
+            // NOTA IMPORTANTE: Si los botones de "Calificar" se reordenan visualmente
+            // con la tabla, el array btnCalificarArray también DEBE ser reordenado o recreado
+            // en este punto para que el 'filmIndex' siga siendo coherente.
+            // Para una solución simple, debes asegurarte de que el botón en la fila 'i'
+            // corresponda al film en la lista 'films.get(i)'.
+        }
+        
+        // 3. Notificar a la tabla que los datos han cambiado
+        tableModel.fireTableDataChanged();
     }
 
 
