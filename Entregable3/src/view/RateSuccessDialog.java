@@ -67,12 +67,4 @@ public class RateSuccessDialog extends JDialog {
     public JButton getBtnContinue() {
         return btnContinue;
     }
-
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            RateSuccessDialog dialog = new RateSuccessDialog(null);
-            dialog.setVisible(true);
-        });
-
-}
 }
