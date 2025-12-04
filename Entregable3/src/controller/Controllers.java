@@ -214,7 +214,6 @@ public class Controllers {
 
 	public void showRateMovieGUI(Film film, int index){
 		RateMovieGUI ratingGUI = new RateMovieGUI(this, film, activeProfiles.get(activeProfile),index);
-		this.attachCloseEvent(ratingGUI);
 		ratingGUI.setVisible(true);
 	}
 
@@ -230,11 +229,10 @@ public class Controllers {
 		try{
 			film =  filmConsultant.searchFilm(title);
 		} catch (APIException e){
-			JOptionPane.showMessageDialog(this.menuGUI,"La pelicula" + title +" no se encuentra disponible",  "Pelicula no encontrada",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.menuGUI,"La pelicula " + title +" no se encuentra disponible",  "Pelicula no encontrada",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		MovieInfoGUI movieInfoGUI = new MovieInfoGUI(this, film);
-		this.attachCloseEvent(movieInfoGUI);
 		movieInfoGUI.setVisible(true);
 	}
 
@@ -260,11 +258,11 @@ public class Controllers {
 	}
 
 	public void attachCloseEvent(JFrame ventana) {
-		//Este metdodo cierra la conexin a la base de datos al cerrar la ventana que esta activa
+		//Este metdodo termina el programa al cerrar una ventana, y cierra la conexion con la BD
     	ventana.addWindowListener(new java.awt.event.WindowAdapter() {
        		 @Override
        		 public void windowClosing(java.awt.event.WindowEvent e) {
-            	MyConnection.disconnect();
+            	Main.finishProgram();
         	}
     	});
 	}

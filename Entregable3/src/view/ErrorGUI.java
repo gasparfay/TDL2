@@ -10,7 +10,7 @@ public class ErrorGUI extends JDialog {
 
     public ErrorGUI(String message, Controllers controller) {
 
-        super((Frame) null, "Error", true); // modal sin ventana padre
+        super((Frame) null, "Error", true); 
 
         setSize(400, 180);
         setLocationRelativeTo(null);  // centrar en pantalla

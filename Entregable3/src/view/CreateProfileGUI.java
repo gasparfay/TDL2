@@ -14,7 +14,7 @@ public class CreateProfileGUI extends JDialog {
     private Controllers controller;
 
     public CreateProfileGUI(JFrame parent, Controllers controller) {
-        super(parent, "Crear nuevo perfil", true); // true = modal
+        super(parent, "Crear nuevo perfil", true); 
         this.controller = controller;
 
         setSize(350, 180);

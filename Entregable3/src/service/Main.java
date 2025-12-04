@@ -16,4 +16,10 @@ public class Main {
             System.out.print("Error en la operación con la BD: " + e.getMessage());
         }
     }   
+
+    //Finaliza el programa y cierra la conexion con la BD
+    public static void finishProgram() {
+        MyConnection.disconnect();
+        System.exit(0);
+    }
 }

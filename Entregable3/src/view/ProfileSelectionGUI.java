@@ -111,7 +111,7 @@ public class ProfileSelectionGUI extends JFrame {
 
         btn.addActionListener(e -> {
             controller.enterWithProfile(name);
-            dispose(); // acá sí corresponde
+            dispose(); 
         });
         return btn;
     }
