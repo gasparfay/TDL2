@@ -112,16 +112,17 @@ public class RateMovieGUI extends JFrame {
         btnSave.setPreferredSize(new Dimension(140, 35));
         btnSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerfomed(ActionEvent e){
-                int selectedIndex = comboRating.getSelectedIndex();
-                String reviewText = txtReview.getText().trim();
-                if (selectedIndex == 0) {
-                    JOptionPane.showMessageDialog(RateMovieGUI.this, "Por favor, selecciona una puntuación.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+        btnSave.addActionListener(e -> {
+            int selectedIndex = comboRating.getSelectedIndex();
+            String reviewText = txtReview.getText().trim();
+            if (selectedIndex == 0) {
+                JOptionPane.showMessageDialog(RateMovieGUI.this, "Por favor, selecciona una puntuación.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-
+            int rating = selectedIndex;
+            controller.handleSaveReview(rating, reviewText,profile,film,index);
+            JOptionPane.showMessageDialog(RateMovieGUI.this, "Se registro correcatamente tu calificacion. Muchas gracias", "Reseña Guardada", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
         });
 
         bottomPanel.add(btnCancel);
@@ -129,6 +130,9 @@ public class RateMovieGUI extends JFrame {
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     }
+
+
+
 
     public JButton getBtnSave() { return btnSave; }
     public JButton getBtnCancel() { return btnCancel; }

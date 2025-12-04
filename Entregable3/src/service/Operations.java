@@ -95,4 +95,8 @@ public class Operations {
         int end = Math.min(10, copy.size());
         return new ArrayList<>(copy.subList(0, end));
     }
+    
+    public void addReview(Review rev) {
+        reviewDAO.loadReview(rev);
+    }
 }

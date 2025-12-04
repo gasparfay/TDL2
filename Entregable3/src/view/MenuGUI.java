@@ -19,6 +19,7 @@ public class MenuGUI extends JFrame {
     private JButton btnLogout;
     private JButton btnSortTitle;
     private JButton btnSortGenre;
+    private JButton[] btnCalificarArray;
 
     public MenuGUI(Controllers controller, List<Film> films, String userName) {
         // Configuración de ventana
@@ -205,10 +206,11 @@ public class MenuGUI extends JFrame {
         });
 
         //Configuramos los botones
-        JButton[] btnCalificarArray = new JButton[Math.min(films.size(), 10)];
+        btnCalificarArray = new JButton[Math.min(films.size(), 10)];
         for (int i = 0; i < Math.min(films.size(), 10); i++) {
-            // Se mantiene model.Film aquí
-           Film film = films.get(i);
+            Film film = films.get(i);
+
+            final int filmIndex = i; 
 
             btnCalificarArray[i] = new JButton("Calificar Película");
             btnCalificarArray[i].setBackground(new Color(0, 144, 255));
@@ -218,10 +220,11 @@ public class MenuGUI extends JFrame {
             btnCalificarArray[i].setBorderPainted(false);
             btnCalificarArray[i].setMaximumSize(new Dimension(150, 28));
             btnCalificarArray[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-            btnCalificarArray[i].setActionCommand(String.valueOf(i));
+            btnCalificarArray[i].setActionCommand(String.valueOf(filmIndex)); // Usamos filmIndex
 
             btnCalificarArray[i].addActionListener(e -> {
-                controller.showRateMovieGUI(film,i);
+                // ** Usamos la variable final filmIndex en lugar de i **
+                controller.showRateMovieGUI(film, filmIndex); 
             });
 
             buttonsPanel.add(btnCalificarArray[i]);
@@ -266,8 +269,11 @@ public class MenuGUI extends JFrame {
     }
 
     public void disableButton(int buttonIndex) {
-        btnCalificarArray[buttonIndex].setEnabled(false);
-        btnCalificarArray[buttonIndex].setBackground(new Color(0, 144, 200));
+        JButton targetButton = btnCalificarArray[buttonIndex];
+        targetButton.setEnabled(false);
+        targetButton.setBackground(new Color(125, 125, 125));
+        targetButton.revalidate(); 
+        targetButton.repaint();
     }
 
 

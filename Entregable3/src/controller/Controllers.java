@@ -18,6 +18,7 @@ public class Controllers {
 	private int activeProfile;
 	private List<Film> loadedFilms;
 	private List<Film> filmsToDisplay; 
+	private MenuGUI menuGUI;
 	
 	public Controllers(Operations ops) {
 		this.ops=ops;
@@ -160,9 +161,9 @@ public class Controllers {
 
             // Cambiar a la pantalla principal
             loadingGUI.dispose();
-            MenuGUI menu = new MenuGUI(this, filmsToDisplay, activeProfiles.get(activeProfile).getName());
-            this.attachCloseEvent(menu);
-            menu.setVisible(true);
+            this.menuGUI = new MenuGUI(this, filmsToDisplay, activeProfiles.get(activeProfile).getName());
+            this.attachCloseEvent(this.menuGUI);
+            this.menuGUI.setVisible(true);
         });
 
     	loaderThread.start();
@@ -198,6 +199,13 @@ public class Controllers {
 		RateMovieGUI ratingGUI = new RateMovieGUI(this, film, activeProfiles.get(activeProfile),index);
 		this.attachCloseEvent(ratingGUI);
 		ratingGUI.setVisible(true);
+	}
+
+	public void handleSaveReview(int rating, String reviewText, Profile profile, Film film, int index) {
+		Review newReview = new Review(Rating.values()[rating], reviewText, new java.util.Date(), profile, film);
+		ops.addReview(newReview);
+		this.menuGUI.disableButton(index);
+		
 	}
 
 	public Account getActiveAccount() {
